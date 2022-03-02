@@ -55,6 +55,8 @@ Route::middleware('api')->group(function () {
     Route::get('products', [ProductController::class, 'allProduct']);
     Route::get('productshow/{id}', [ProductController::class, 'details']);
     Route::post('store-product', [ProductController::class, 'store']);
+   
+   
     //Get Coupon details
     Route::post('coupons/getCoupon', [CouponController::class, 'getCoupon']);
 
