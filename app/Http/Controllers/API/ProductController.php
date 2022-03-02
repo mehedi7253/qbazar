@@ -42,12 +42,33 @@ class ProductController extends Controller {
     public function details($id) {
         // dd($id);
         $product = Product::where('is_active', 1)
-            ->where('id',$id)->first();
+            ->where('xitem',$id)->first();
         return new ProductResource($product);
     }
+
+    public function productUpdate(Request $request, $id)
+    {
+        $validator = Validator::make($request->all(), [
+            'trans.name'    => 'required',
+        ], [
+            'trans.name.unique' => _lang('Name should be unique !'),
+        ]);
+
+        $update_product = DB::table('products')
+                ->where('xitem', $id)
+                ->update([
+                    'slug' => $request->input('slug'),
+                    'stock' => $request->input('stock')
+                ]);
+        return response()->json($update_product);
+        
+    }
+
     public function allProduct(){
         $products = Product::all();
-        return ProductResource::collection($products);
+
+        return response()->json($products);
+        // return ProductResource::collection($products);
     }
 
 

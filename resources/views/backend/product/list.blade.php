@@ -17,6 +17,7 @@
                     <thead>
                         <tr>
                             <th>{{ _lang('Thumbnail') }}</th>
+                            {{-- <th>{{ _lang('Item Code') }}</th> --}}
                             <th>{{ _lang('Name') }}</th>
                             <th>{{ _lang('Category') }}</th>
                             <th>{{ _lang('Unit') }}</th>
