@@ -46,8 +46,8 @@ class ProductController extends Controller {
         return new ProductResource($product);
     }
     public function allProduct(){
-        $product = Product::all();
-        return ProductResource::collection($product);
+        $products = Product::all();
+        return ProductResource::collection($products);
     }
 
 
@@ -69,10 +69,8 @@ class ProductController extends Controller {
             ->where('id', '=', $id)
             ->update(['xitem' => DB::raw("CONCAT('IC--', LPAD($id, 6, 0))")]);
 
-        // return response()->json($product);
-
-
-
+        return response()->json($product);
+        
         // $product                   = new TempProduct();
         // $product->product_name     = $request->input('product_name');
         // $product->stock_quantity   = $request->input('stock_quantity');
@@ -84,9 +82,7 @@ class ProductController extends Controller {
         //     ->update(['itemcode' => DB::raw("CONCAT('IC--', LPAD($id, 6, 0))")]);
 
         // return response()->json($product);
-
-
-        return new ProductResource($product);
+        // return new ProductResource($product);
     }
 
 }
