@@ -97,6 +97,12 @@
 
                                 <div class="col-md-12">
                                     <div class="form-group">
+                                        <label class="control-label">{{ _lang('Stock Quantity') }}</label>
+                                        <input type="text" name="stock" value="{{ $product->stock }}" class="form-control"> 
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="form-group">
                                         <label class="control-label">{{ _lang('In Stock') }}</label>
                                         <select class="form-control auto-select" data-selected="{{ $product->in_stock }}"
                                             name="in_stock" required>

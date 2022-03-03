@@ -25,7 +25,8 @@ class ProductController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function index() {
-        return view('backend.product.list');
+        $products = Product::orderBy('id', 'DESC')->get();
+        return view('backend.product.list', compact('products'));
     }
 
     public function get_table_data() {
@@ -208,6 +209,7 @@ class ProductController extends Controller {
             'special_price' => 'nullable|numeric',
             'in_stock'      => 'required',
             'thumbnail'     => 'nullable|image',
+            'stock'         => 'nullable'
         ], [
             'trans.name.unique' => _lang('Name should be unique !'),
         ]);
@@ -244,6 +246,7 @@ class ProductController extends Controller {
         $product->special_price = $request->input('special_price');
         $product->in_stock      = $request->input('in_stock');
         $product->is_active     = $request->input('is_active');
+        $product->stock         = $request->input('stock');
         if ($request->hasfile('thumbnail')) {
             $product->thumbnail = $thumbnail;
         }

@@ -10,7 +10,7 @@
 <div class="row">
     @if (in_array('dashboard.order_processing_widget',$permissions) || $user_type == 'admin')
     <div class="col-xl-3 col-md-6">
-        <div class="card mb-4 mini-card">
+        <div class="card mb-4 mini-card"  style="height: 120px">
             <div class="card-body">
                 <div class="d-flex align-items-center">
                     <h5>{{ _lang('ORDERS IN PROCESSING') }}</h5>
@@ -24,7 +24,7 @@
 
     @if (in_array('dashboard.pending_payments_widget',$permissions) || $user_type == 'admin')
     <div class="col-xl-3 col-md-6">
-        <div class="card mb-4 mini-card">
+        <div class="card mb-4 mini-card" style="height: 120px">
             <div class="card-body">
                 <div class="d-flex align-items-center">
                     <h5>{{ _lang('PENDING ORDERS') }}</h5>
@@ -38,7 +38,7 @@
 
     @if (in_array('dashboard.current_day_sales_widget',$permissions) || $user_type == 'admin')
     <div class="col-xl-3 col-md-6">
-        <div class="card mb-4 mini-card">
+        <div class="card mb-4 mini-card"  style="height: 120px">
             <div class="card-body">
                 <div class="d-flex align-items-center">
                     <h5>{{ _lang('CURRENT DAY SALES') }}</h5>
@@ -52,7 +52,7 @@
 
     @if (in_array('dashboard.total_sales_widget',$permissions) || $user_type == 'admin')
     <div class="col-xl-3 col-md-6">
-        <div class="card mb-4 mini-card">
+        <div class="card mb-4 mini-card" style="height: 120px">
             <div class="card-body">
                 <div class="d-flex align-items-center">
                     <h5>{{ _lang('TOTAL SALES') }}</h5>

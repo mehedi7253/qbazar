@@ -96,6 +96,7 @@ Route::group(['middleware' => ['install']], function () {
             Route::resource('orders', 'OrderController')->except([
                 'create', 'store', 'edit',
             ]);
+            Route::get('invoice/{id}', 'OrderController@invoice')->name('orders.invoice');
 
             //Order Product Controller
             Route::get('/all/product', [OrderProductController::class, 'index'])->name('order.product');

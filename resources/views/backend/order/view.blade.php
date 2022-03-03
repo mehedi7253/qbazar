@@ -5,7 +5,7 @@
 	<div class="col-lg-9">
 		<div class="card">
 			<div class="card-header">
-				<span class="panel-title">{{ _lang('View Order Details') }}</span>
+				<span class="panel-title">{{ _lang('View Order Details') }} <a href="{{ route('orders.invoice', $id) }}" class="btn btn-info float-right"><i class="icofont-file-document"></i> Invoice</a></span>
 			</div>
 
 			<div class="card-body">

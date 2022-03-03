@@ -103,6 +103,20 @@ class OrderController extends Controller
         }
     }
 
+    public function invoice($id)
+    {
+        $order = Order::find($id);
+        $products = DB::table('order_products')
+                ->join('products', 'products.id', '=', 'order_products.product_id')
+                ->join('unit_translations', 'unit_translations.id', 'products.unit_id')
+                ->join('product_translations', 'product_translations.product_id', 'products.id')
+                ->where('order_products.order_id','=', $id)
+                ->get();
+        // return $products;
+
+        return view('backend.order.invoice', compact('products', 'order', 'id'));
+
+    }
     /**
      * Assign delivery boy
      *

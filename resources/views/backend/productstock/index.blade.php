@@ -10,10 +10,11 @@
             </div>
             <div class="card-body">
                 <table id="example" class="table table-striped table-bordered" style="width:100%">
-                    <thead>
+                    <thead class="text-center">
                         <tr>
                             <th>#</th>
                             <th>Product Code</th>
+                            <th>Name</th>
                             <th>Status</th>
                             <th>Stock</th>
                             <th>Action</th>
@@ -23,8 +24,9 @@
                         @foreach ($products as $i=>$product)
                             <tr>
                                 <td>{{ ++$i }}</td>
-                                <td>{{ $product->xitem }}</td>
-                                <td>
+                                <td class=" text-center">{{ $product->xitem }}</td>
+                                <td style="width: 30%">{{ $product->translation->name }}</td>
+                                <td class=" text-center">
                                     @if ($product->stockProducts->stock_quantity == null)
 
                                         @else
@@ -36,8 +38,8 @@
                                     @endif
                                    
                                 </td>
-                                <td>{{ $product->stock }}</td>
-                                <td>
+                                <td class=" text-center">{{ $product->stock }}</td>
+                                <td class=" text-center">
                                     <a href="{{ route('product-stock.edit',$product->id) }}" class="btn btn-primary btn-sm"><i class="icofont-edit-alt"></i></a>
                                 </td>
                             </tr>

@@ -17,7 +17,7 @@ class ProductstockController extends Controller
      */
     public function index()
     {
-        $products = Product::all();
+        $products = Product::orderBy('id','DESC')->get();
         return view('backend.productstock.index', compact('products'));
     }
 
