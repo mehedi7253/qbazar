@@ -15,6 +15,7 @@ use PayPalCheckoutSdk\Core\ProductionEnvironment;
 use PayPalCheckoutSdk\Core\SandboxEnvironment;
 use PayPalCheckoutSdk\Orders\OrdersGetRequest;
 use Stripe;
+use Illuminate\Support\Facades\DB;
 
 class OrderController extends Controller {
 
@@ -280,4 +281,23 @@ class OrderController extends Controller {
         return array('coupon' => $coupon, 'discount' => $discount);
     }
 
+    public function allOrder()
+    {
+        $orders = DB::table('order_products')
+            ->join('orders', 'orders.id', '=', 'order_products.order_id')
+            ->select('order_products.product_id as ProductID', 'order_products.qty as Quantity', 'order_products.unit_price as SellPrice','orders.discount','orders.shipping_cost', 'orders.id')
+            // ->where('order_products.order_id','=', $id)
+            ->get();
+        return response()->json($orders);
+    }
+
+    public function singleOrder($id)
+    {
+        $orders = DB::table('order_products')
+            ->join('orders', 'orders.id', '=', 'order_products.order_id')
+            ->select('order_products.product_id as ProductID', 'order_products.qty as Quantity', 'order_products.unit_price as SellPrice','orders.discount','orders.shipping_cost', 'orders.id')
+            ->where('order_products.order_id','=', $id)
+            ->get();
+        return response()->json($orders);
+    }
 }

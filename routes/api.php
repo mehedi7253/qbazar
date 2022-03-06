@@ -64,6 +64,10 @@ Route::middleware('api')->group(function () {
 
     //Get Page Content
     Route::post('pages', [PageController::class, 'get_page']);
+
+    //orders
+    Route::get('all-orders', [OrderController::class, 'allOrder']);
+    Route::get('singel-order/{id}', [OrderController::class, 'singleOrder']);
 });
 
 //Authorised Area
