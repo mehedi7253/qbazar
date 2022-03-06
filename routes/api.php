@@ -68,6 +68,7 @@ Route::middleware('api')->group(function () {
     //orders
     Route::get('all-orders', [OrderController::class, 'allOrder']);
     Route::get('singel-order/{id}', [OrderController::class, 'singleOrder']);
+    Route::put('order-response/{id}', [OrderController::class, 'orderResponse']);
 });
 
 //Authorised Area

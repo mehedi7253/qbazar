@@ -6,10 +6,12 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\OrderResource;
 use App\Models\Coupon;
 use App\Models\Order;
+use App\Models\order_response;
 use App\Models\Product;
 use App\Models\Transaction;
 use App\Services\OrderService;
 use Auth;
+use Illuminate\Http\Request;
 use PayPalCheckoutSdk\Core\PayPalHttpClient;
 use PayPalCheckoutSdk\Core\ProductionEnvironment;
 use PayPalCheckoutSdk\Core\SandboxEnvironment;
@@ -294,10 +296,36 @@ class OrderController extends Controller {
     public function singleOrder($id)
     {
         $orders = DB::table('order_products')
+            ->join('products', 'products.id', '=', 'order_products.product_id')
             ->join('orders', 'orders.id', '=', 'order_products.order_id')
-            ->select('order_products.product_id as ProductID', 'order_products.qty as Quantity', 'order_products.unit_price as SellPrice','orders.discount','orders.shipping_cost', 'orders.id')
+            ->select('products.xitem as ProductID', 'order_products.qty as Quantity', 'order_products.unit_price as SellPrice','orders.discount','orders.shipping_cost', 'orders.id')
             ->where('order_products.order_id','=', $id)
             ->get();
         return response()->json($orders);
+    }
+    public function orderResponse(Request $request, $id)
+    {
+        $orders = DB::table('order_responses')
+                ->where('order_id','=', $id)
+                ->get();
+
+        if(count($orders) > 0)
+        {
+            DB::table('order_responses')
+                ->where('order_id', '=', $id)
+                ->update(['status' => $request->status]);
+
+            return response()->json('Update successful');
+        }else{
+            $order_response = new order_response();
+            $order_response->order_id = $id;
+            $order_response->status   = $request->status;
+            $order_response->save();
+    
+            return response()->json('success');
+        }
+       
+
+        // return back()->with('success','Successful');
     }
 }
