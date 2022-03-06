@@ -30,7 +30,7 @@
                                 </td>
                                 <td>{{ $product->xitem }}</td>
                                 <td>{{ $product->translation->name }}</td>
-                                <td style="width: 10%">{{ $product->category->slug }}</td>
+                                <td style="width: 10%">{{ $product->category->translation->name }}</td>
                                 <td>{{ $product->unit_number }} {{ $product->unit->translation->short_name }} </td>
                                 <td>{{ $product->price }}</td>
                                 <td>

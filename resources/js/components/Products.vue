@@ -18,6 +18,15 @@
             <h6>  {{ product.op_name }} <br/> ({{ product.name }}) </h6>
           
             <small>{{ product.unit }}</small>
+
+            <!-- {{ product.stock }} || {{ product.stock_quantity }}
+            <p v-if="product.stock_quantity <= product.stock">
+              available
+            </p>
+            <p v-else>
+              not available
+            </p> -->
+            <!-- <p v-if="product.stock_quantity <= product.stock"> available </p> -->
             <p class="price"><span v-html="product._price"></span></p>
             <button
               v-if="product.stock_quantity <= product.stock"
