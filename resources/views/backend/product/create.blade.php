@@ -93,7 +93,12 @@
                                         </select>
                                     </div>
                                 </div>
-
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label class="control-label">{{ _lang('Stock Quantity') }}</label>
+                                        <input type="text" name="stock" min="1" class="form-control" placeholder="Enter Stock Quantity"> 
+                                    </div>
+                                </div>
                                 <div class="col-md-12">
                                     <div class="form-group">
                                         <label class="control-label">{{ _lang('In Stock') }}</label>

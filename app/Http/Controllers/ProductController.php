@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Product;
 use DataTables;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Image;
 use Validator;
 
@@ -149,10 +150,15 @@ class ProductController extends Controller {
         $product->special_price = $request->input('special_price');
         $product->in_stock      = $request->input('in_stock');
         $product->is_active     = $request->input('is_active');
+        $product->stock         = $request->input('stock');
         $product->thumbnail     = $thumbnail;
 
         $product->save();
-
+        $id = $product->id;
+        DB::table('products')
+            ->where('id', '=', $id)
+            ->update(['xitem' => DB::raw("CONCAT('IC--', LPAD($id, 6, 0))")]);
+        
         if (!$request->ajax()) {
             return redirect()->route('products.create')->with('success', _lang('Saved Successfully'));
         } else {
