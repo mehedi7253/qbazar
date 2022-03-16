@@ -295,13 +295,22 @@ class OrderController extends Controller {
 
     public function singleOrder($id)
     {
-        $orders = DB::table('order_products')
-            ->join('products', 'products.id', '=', 'order_products.product_id')
-            ->join('orders', 'orders.id', '=', 'order_products.order_id')
-            ->select('products.xitem as ProductID', 'order_products.qty as Quantity', 'order_products.unit_price as SellPrice','orders.discount','orders.shipping_cost', 'orders.id')
-            ->where('order_products.order_id','=', $id)
+        $headline = DB::table('orders')
+            ->select('created_at as OrderDate', 'customer_id as UserID', 'sub_total as TotalAmount', 'shipping_cost as Shipping', 'discount as Discount')
+            ->where('id','=',$id)
             ->get();
-        return response()->json($orders);
+
+        // $orders = DB::table('order_products')
+        //     ->join('products', 'products.id', '=', 'order_products.product_id')
+        //     ->join('orders', 'orders.id', '=', 'order_products.order_id')
+        //     ->select('products.xitem as ItemCode', 'order_products.qty as Quantity', 'order_products.unit_price as Rate', 'order_products.unit_price * order_products.qty')
+        //     ->where('order_products.order_id','=', $id)
+        //     ->get();
+
+        $orders = DB::select(DB::raw("SELECT products.xitem as ItemCode, order_products.qty as Quantity, order_products.unit_price as Rate, order_products.unit_price * order_products.qty as SubTotal FROM order_products, orders, products WHERE products.id = order_products.product_id AND orders.id = order_products.order_id AND order_products.order_id = $id "));
+        $data = [$headline, $orders];
+
+        return response()->json($data);
     }
     public function orderResponse(Request $request, $id)
     {

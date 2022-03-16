@@ -123,4 +123,3 @@ $language["Registration successfully"]="Registration successfully";
 $language["Out Of Stock"]="Out Of Stock";
 $language["Search No Result"]="Search No Result";
 $language["We are sorry. We cannot find any matches for your search term"]="We're sorry. We cannot find any matches for your search term.";
-$language["Product Categories"] = "Product Categories";

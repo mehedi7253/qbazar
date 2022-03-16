@@ -37,8 +37,8 @@ class ProductController extends Controller {
             ->with('translation')
             ->with('category.translation')
             ->where('product_type', 'general')
-            ->where('category_id', '!=', null)
-            ->orderBy("products.id", "desc");
+            ->where('category_id', '!=', null);
+            // ->orderBy("products.id", "desc");
 
         return Datatables::eloquent($products, $currency)
             ->editColumn('thumbnail', function ($product) {
