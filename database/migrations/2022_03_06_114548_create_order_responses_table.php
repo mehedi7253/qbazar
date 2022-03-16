@@ -17,6 +17,7 @@ class CreateOrderResponsesTable extends Migration
             $table->id();
             $table->bigInteger('order_id');
             $table->integer('status');
+            $table->string('remaining_product')->nullable();
             $table->timestamps();
         });
     }

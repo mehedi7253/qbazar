@@ -307,8 +307,15 @@ class OrderController extends Controller {
         //     ->where('order_products.order_id','=', $id)
         //     ->get();
 
+        $remain_product = DB::table('order_products')
+            ->join('products', 'products.id', '=', 'order_products.product_id')
+            ->join('orders', 'orders.id', '=', 'order_products.order_id')
+            ->select('products.xitem as ItemCode',  'products.stock as RemainingProduct')
+            ->where('order_products.order_id','=', $id)
+            ->get();
+
         $orders = DB::select(DB::raw("SELECT products.xitem as ItemCode, order_products.qty as Quantity, order_products.unit_price as Rate, order_products.unit_price * order_products.qty as SubTotal FROM order_products, orders, products WHERE products.id = order_products.product_id AND orders.id = order_products.order_id AND order_products.order_id = $id "));
-        $data = [$headline, $orders];
+        $data = [$headline, $orders, $remain_product];
 
         return response()->json($data);
     }
@@ -324,14 +331,28 @@ class OrderController extends Controller {
                 ->where('order_id', '=', $id)
                 ->update(['status' => $request->status]);
 
-            return response()->json('Update successful');
+            $remain_product = DB::table('order_products')
+                ->join('products', 'products.id', '=', 'order_products.product_id')
+                ->join('orders', 'orders.id', '=', 'order_products.order_id')
+                ->select('products.xitem as ItemCode',  'products.stock as RemainingProduct')
+                ->where('order_products.order_id','=', $id)
+                ->get();
+            
+            return response()->json($remain_product);
         }else{
             $order_response = new order_response();
             $order_response->order_id = $id;
             $order_response->status   = $request->status;
             $order_response->save();
     
-            return response()->json('success');
+            $remain_product = DB::table('order_products')
+                ->join('products', 'products.id', '=', 'order_products.product_id')
+                ->join('orders', 'orders.id', '=', 'order_products.order_id')
+                ->select('products.xitem as ItemCode',  'products.stock as RemainingProduct')
+                ->where('order_products.order_id','=', $id)
+                ->get();
+
+            return response()->json($remain_product);
         }
        
 
