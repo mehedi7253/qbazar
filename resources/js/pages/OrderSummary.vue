@@ -51,6 +51,15 @@
                     - {{ $currency + " " + order.discount }}
                   </td>
                 </tr>
+                <!-- <tr>
+                  <td>Quantity:</td>
+                   <td class="text-right" v-for="product in order.products" :key="product.id">
+                     {{ product.qty }}<br/>
+                     
+                     {{ product.product_id }}<br/>
+                      {{ product.unit_price }}<br/>
+                  </td>
+                </tr> -->
                 <tr>
                   <td>{{ $lang["Grand Total"] }}</td>
                   <td class="text-right">

@@ -12,6 +12,7 @@ use App\Models\Transaction;
 use App\Services\OrderService;
 use Auth;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 use PayPalCheckoutSdk\Core\PayPalHttpClient;
 use PayPalCheckoutSdk\Core\ProductionEnvironment;
 use PayPalCheckoutSdk\Core\SandboxEnvironment;
@@ -119,12 +120,14 @@ class OrderController extends Controller {
     }
 
     public function show($id) {
+ 
         $order = Order::with('products')
             ->where('id', $id)
             ->where('customer_id', Auth::Guard('api')->user()->id)
             ->orWhere('delivery_boy_id', Auth::Guard('api')->user()->id)
             ->first();
         return new OrderResource($order);
+
     }
 
     public function make_payment($id) {
@@ -295,29 +298,23 @@ class OrderController extends Controller {
 
     public function singleOrder($id)
     {
-        $headline = DB::table('orders')
-            ->select('created_at as OrderDate', 'customer_id as UserID', 'sub_total as TotalAmount', 'shipping_cost as Shipping', 'discount as Discount')
-            ->where('id','=',$id)
-            ->get();
+        $headline = DB::select(DB::raw("SELECT  DATE(created_at)  as xdate, id as xordernum, sub_total as xtotamt, shipping_cost as xshipamt, discount as xdiscamt, customer_phone as xnote FROM orders WHERE id = $id"));
 
-        // $orders = DB::table('order_products')
-        //     ->join('products', 'products.id', '=', 'order_products.product_id')
-        //     ->join('orders', 'orders.id', '=', 'order_products.order_id')
-        //     ->select('products.xitem as ItemCode', 'order_products.qty as Quantity', 'order_products.unit_price as Rate', 'order_products.unit_price * order_products.qty')
-        //     ->where('order_products.order_id','=', $id)
-        //     ->get();
+        // $orders = DB::select(DB::raw("SELECT DATE(orders.created_at)  as xdate, orders.id as xordernum, orders.sub_total as xtotamt, orders.shipping_cost as xshipamt, orders.discount as xdiscamt, orders.customer_phone as xnote, products.xitem as xqtyord, order_products.qty as xqtyord, order_products.unit_price as xrate, order_products.unit_price * order_products.qty as xlineamt FROM order_products, orders, products WHERE products.id = order_products.product_id AND orders.id = order_products.order_id AND order_products.order_id = $id GROUP BY orders.id"));
 
-        $remain_product = DB::table('order_products')
-            ->join('products', 'products.id', '=', 'order_products.product_id')
-            ->join('orders', 'orders.id', '=', 'order_products.order_id')
-            ->select('products.xitem as ItemCode',  'products.stock as RemainingProduct')
-            ->where('order_products.order_id','=', $id)
-            ->get();
+        $orders = DB::select(DB::raw("SELECT products.xitem as xqtyord, order_products.qty as xqtyord, order_products.unit_price as xrate, order_products.unit_price * order_products.qty as xlineamt FROM order_products, orders, products WHERE products.id = order_products.product_id AND orders.id = order_products.order_id AND order_products.order_id = $id"));
+        // $data = [$headline, 'details_list', $orders];
+        
+        $data = array_merge($headline, ['Details' => $orders]);
+        // $flattened = Arr::flatten($data);
 
-        $orders = DB::select(DB::raw("SELECT products.xitem as ItemCode, order_products.qty as Quantity, order_products.unit_price as Rate, order_products.unit_price * order_products.qty as SubTotal FROM order_products, orders, products WHERE products.id = order_products.product_id AND orders.id = order_products.order_id AND order_products.order_id = $id "));
-        $data = [$headline, $orders, $remain_product];
+        $collectionA = collect($headline);
+        $details     = collect('Details');
+        $collectionB = collect([$orders]);
 
-        return response()->json($data);
+        $collection = $collectionA->concat($details)->concat($collectionB);
+
+        return response()->json($collection);
     }
     public function orderResponse(Request $request, $id)
     {
