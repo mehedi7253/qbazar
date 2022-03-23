@@ -305,16 +305,11 @@ class OrderController extends Controller {
         $orders = DB::select(DB::raw("SELECT products.xitem as xqtyord, order_products.qty as xqtyord, order_products.unit_price as xrate, order_products.unit_price * order_products.qty as xlineamt FROM order_products, orders, products WHERE products.id = order_products.product_id AND orders.id = order_products.order_id AND order_products.order_id = $id"));
         // $data = [$headline, 'details_list', $orders];
         
-        $data = array_merge($headline, ['Details' => $orders]);
+        $hed = Arr::flatten($headline);
+        $data = array_merge($hed,['Details' => $orders]);
         // $flattened = Arr::flatten($data);
 
-        $collectionA = collect($headline);
-        $details     = collect('Details');
-        $collectionB = collect([$orders]);
-
-        $collection = $collectionA->concat($details)->concat($collectionB);
-
-        return response()->json($collection);
+        return response()->json($data);
     }
     public function orderResponse(Request $request, $id)
     {
