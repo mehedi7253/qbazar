@@ -4,7 +4,14 @@
       <h4 class="text-center">{{ $lang["Delivery Address"] }}</h4>
     </div>
     <div class="card-body">
-      <form @submit.prevent="saveAddress" autocomplete="off">
+
+      <div v-if="user.phone && user.address == null">
+                <router-link :to="{ name: 'profile' }">
+                   <label class="text-danger">Please update Your Profile First <span class="text-info">Click Here</span></label>
+                </router-link>
+      </div>
+      <div v-else>
+          <form @submit.prevent="saveAddress" autocomplete="off">
         <div class="form-label-group mb-3">
           <label for="name">{{ $lang["Name"] }} *</label>
           <input
@@ -63,6 +70,9 @@
           {{ $lang["Next: Delivery Timing"] }}
         </button>
       </form>
+      </div>
+
+    
     </div>
   </div>
 </template>

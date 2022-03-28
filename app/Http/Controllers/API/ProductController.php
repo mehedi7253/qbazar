@@ -11,9 +11,11 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Validator;
 
-class ProductController extends Controller {
+class ProductController extends Controller
+{
 
-    public function search() {
+    public function search()
+    {
         $keyword = request('keyword');
         if ($keyword == '') {
             return ProductResource::collection([]);
@@ -30,7 +32,8 @@ class ProductController extends Controller {
         return ProductResource::collection($products);
     }
 
-    public function offers() {
+    public function offers()
+    {
         $products = Product::where('is_active', 1)
             ->where('product_type', 'offer')
             ->orderBy('slug')
@@ -39,10 +42,11 @@ class ProductController extends Controller {
         return ProductResource::collection($products);
     }
 
-    public function details($id) {
+    public function details($id)
+    {
         // dd($id);
         $product = Product::where('is_active', 1)
-            ->where('xitem',$id)->first();
+            ->where('xitem', $id)->first();
         return new ProductResource($product);
     }
 
@@ -55,18 +59,17 @@ class ProductController extends Controller {
         ]);
 
         $update_product = DB::table('products')
-                ->where('xitem', $id)
-                ->update([
-                    'slug' => $request->input('slug'),
-                    'stock' => $request->input('stock')
-                ]);
+            ->where('xitem', $id)
+            ->update([
+                'slug' => $request->input('slug'),
+                'stock' => $request->input('stock')
+            ]);
         return response()->json($update_product);
-        
     }
 
-    public function allProduct(){
+    public function allProduct()
+    {
         $products = Product::all();
-
         return response()->json($products);
         // return ProductResource::collection($products);
     }
@@ -74,28 +77,54 @@ class ProductController extends Controller {
 
     public function store(Request $request)
     {
-        $validator = Validator::make($request->all(), [
-            'trans.name'    => 'required',
-        ], [
-            'trans.name.unique' => _lang('Name should be unique !'),
-        ]);
+        $productlist = $request->productList;
 
-        $product           = new Product();
-        $product->slug     = $request->input('slug');
-        $product->stock    = $request->input('stock');
-      
-        $product->save();
-        $id = $product->id;
-        DB::table('products')
-            ->where('id', '=', $id)
-            ->update(['xitem' => DB::raw("CONCAT('IC--', LPAD($id, 6, 0))")]);
-
+        foreach($productlist as $products)
+        {
+            // $pro_name = $products['slug'];
+            $product = new Product();
+            $product->slug   = $products['slug'];
+            $product->stock  = $products['stock'];
+            $product->xitem  = $products['xitem'];
+            $product->save();
+        }
         return response()->json($product);
-        
+
+        // if ($productlist = $request->productList) {
+        //     foreach ($request->slug as $key => $insert) {
+        //         $product = new Product();
+        //         $product->slug   = $productlist->slug[$key];
+        //         $product->stock  = $productlist->stock[$key];
+        //         $product->xitem  = $productlist->xitem[$key];
+        //         $product->save();
+        //     }
+        // }
+
+       
+
+        // $validator = Validator::make($request->all(), [
+        //     'trans.name'    => 'required',
+        // ], [
+        //     'trans.name.unique' => _lang('Name should be unique !'),
+        // ]);
+
+
+        // $product           = new Product();
+        // $product->slug     = $request->input('slug');
+        // $product->stock    = $request->input('stock');
+
+        // $product->save();
+        // $id = $product->id;
+        // DB::table('products')
+        //     ->where('id', '=', $id)
+        //     ->update(['xitem' => DB::raw("CONCAT('IC--', LPAD($id, 6, 0))")]);
+
+        // return response()->json($product);
+
         // $product                   = new TempProduct();
         // $product->product_name     = $request->input('product_name');
         // $product->stock_quantity   = $request->input('stock_quantity');
-      
+
         // $product->save();
         // $id = $product->id;
         // DB::table('temp_products')
@@ -105,5 +134,4 @@ class ProductController extends Controller {
         // return response()->json($product);
         // return new ProductResource($product);
     }
-
 }

@@ -75,7 +75,7 @@
           </tbody>
         </table>
 
-        <button type="submit" class="btn btn-primary btn-block mt-2">
+        <button @submit.prevent="onSubmit"  class="btn btn-primary btn-block mt-2">
           <span v-if="loading" class="spinner-border spinner-border-sm"></span>
           <span v-if="!loading">{{ $lang["Place Order"] }}</span>
         </button>
@@ -164,6 +164,15 @@ export default {
         });
         if (this.deliveryDetails.paymentMethod == "cash_on_delivery") {
           this.$awn.success(this.$lang["Your Order placed sucessfully"]);
+          //  if(this.$awn.success)
+          //  {
+          //      $(document).ready(function () {
+          //       setTimeout(function () {
+          //         location.reload(true);
+          //       }, 1000);
+          //     });
+          //  }
+          
         }
       });
     },

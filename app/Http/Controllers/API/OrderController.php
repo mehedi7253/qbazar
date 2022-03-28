@@ -59,7 +59,7 @@ class OrderController extends Controller {
         $cartItems       = $orderData->cartItems;
         $couponCode      = $orderData->couponCode;
         $deliveryDetails = $orderData->deliveryDetails;
-
+        
         $freedeliveryAmount = get_option('free_delivery_amount', 0);
 
         $productIds = array();
@@ -298,16 +298,17 @@ class OrderController extends Controller {
 
     public function singleOrder($id)
     {
+        $loginDto = ['zid','username', 'password'];
+
         $headline = DB::select(DB::raw("SELECT  DATE(created_at)  as xdate, id as xordernum, sub_total as xtotamt, shipping_cost as xshipamt, discount as xdiscamt, customer_phone as xnote FROM orders WHERE id = $id"));
 
-        // $orders = DB::select(DB::raw("SELECT DATE(orders.created_at)  as xdate, orders.id as xordernum, orders.sub_total as xtotamt, orders.shipping_cost as xshipamt, orders.discount as xdiscamt, orders.customer_phone as xnote, products.xitem as xqtyord, order_products.qty as xqtyord, order_products.unit_price as xrate, order_products.unit_price * order_products.qty as xlineamt FROM order_products, orders, products WHERE products.id = order_products.product_id AND orders.id = order_products.order_id AND order_products.order_id = $id GROUP BY orders.id"));
+        // $orders = DB::select(DB::raw("SELECT DATE(orders.created_at)  as xdate, orders.id as xordernum, orders.sub_total as xtotamt, orders.shipping_cost as xshipamt, orders.discount as xdiscamt, orders.customer_phone as xnote, products.xitem as xqtyord, order_products.qty as xqtyord, order_products.unit_price as xrate, order_products.unit_price * order_products.qty as xlineamt FROM order_products, orders, products WHERE products.id = order_products.product_id AND orders.id = order_products.order_id AND order_products.order_id = $id"));
 
         $orders = DB::select(DB::raw("SELECT products.xitem as xqtyord, order_products.qty as xqtyord, order_products.unit_price as xrate, order_products.unit_price * order_products.qty as xlineamt FROM order_products, orders, products WHERE products.id = order_products.product_id AND orders.id = order_products.order_id AND order_products.order_id = $id"));
-        // $data = [$headline, 'details_list', $orders];
+        // $data = [ $headline, 'details_list', $orders];
         
-        $hed = Arr::flatten($headline);
-        $data = array_merge($hed,['Details' => $orders]);
-        // $flattened = Arr::flatten($data);
+        // $hed = Arr::flatten($headline);
+        $data = array_merge(['loginDto'=> $loginDto],['headline' => $headline],['Details' => $orders]);
 
         return response()->json($data);
     }

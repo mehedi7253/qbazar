@@ -4535,6 +4535,16 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   computed: _objectSpread(_objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_0__.mapGetters)("auth", ["user", "loading"])), (0,vuex__WEBPACK_IMPORTED_MODULE_0__.mapGetters)("checkout", ["errors"])),
@@ -4738,7 +4748,15 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         });
 
         if (_this.deliveryDetails.paymentMethod == "cash_on_delivery") {
-          _this.$awn.success(_this.$lang["Your Order placed sucessfully"]);
+          _this.$awn.success(_this.$lang["Your Order placed sucessfully"]); //  if(this.$awn.success)
+          //  {
+          //      $(document).ready(function () {
+          //       setTimeout(function () {
+          //         location.reload(true);
+          //       }, 1000);
+          //     });
+          //  }
+
         }
       });
     }
@@ -91414,164 +91432,185 @@ var render = function() {
     ]),
     _vm._v(" "),
     _c("div", { staticClass: "card-body" }, [
-      _c(
-        "form",
-        {
-          attrs: { autocomplete: "off" },
-          on: {
-            submit: function($event) {
-              $event.preventDefault()
-              return _vm.saveAddress.apply(null, arguments)
-            }
-          }
-        },
-        [
-          _c("div", { staticClass: "form-label-group mb-3" }, [
-            _c("label", { attrs: { for: "name" } }, [
-              _vm._v(_vm._s(_vm.$lang["Name"]) + " *")
-            ]),
-            _vm._v(" "),
-            _c("input", {
-              directives: [
-                {
-                  name: "model",
-                  rawName: "v-model",
-                  value: _vm.user.name,
-                  expression: "user.name"
-                }
-              ],
-              class:
-                _vm.errors && _vm.errors.name
-                  ? "form-control is-invalid"
-                  : "form-control",
-              attrs: {
-                type: "text",
-                id: "name",
-                placeholder: _vm.$lang["Name"],
-                required: ""
-              },
-              domProps: { value: _vm.user.name },
-              on: {
-                input: function($event) {
-                  if ($event.target.composing) {
-                    return
-                  }
-                  _vm.$set(_vm.user, "name", $event.target.value)
-                }
-              }
-            }),
-            _vm._v(" "),
-            _vm.errors && _vm.errors.name
-              ? _c("span", { staticClass: "text-danger" }, [
-                  _vm._v(
-                    "\n          " + _vm._s(_vm.errors.name[0]) + "\n        "
-                  )
-                ])
-              : _vm._e()
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "form-label-group mb-3" }, [
-            _c("label", { attrs: { for: "phone" } }, [
-              _vm._v(_vm._s(_vm.$lang["Mobile Number"]) + " *")
-            ]),
-            _vm._v(" "),
-            _c("input", {
-              directives: [
-                {
-                  name: "model",
-                  rawName: "v-model",
-                  value: _vm.user.phone,
-                  expression: "user.phone"
-                }
-              ],
-              class:
-                _vm.errors && _vm.errors.phone
-                  ? "form-control is-invalid"
-                  : "form-control",
-              attrs: {
-                type: "text",
-                id: "phone",
-                placeholder: _vm.$lang["Mobile Number"],
-                required: ""
-              },
-              domProps: { value: _vm.user.phone },
-              on: {
-                input: function($event) {
-                  if ($event.target.composing) {
-                    return
-                  }
-                  _vm.$set(_vm.user, "phone", $event.target.value)
-                }
-              }
-            }),
-            _vm._v(" "),
-            _vm.errors && _vm.errors.phone
-              ? _c("span", { staticClass: "text-danger" }, [
-                  _vm._v(
-                    "\n          " + _vm._s(_vm.errors.phone[0]) + "\n        "
-                  )
-                ])
-              : _vm._e()
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "form-label-group mb-3" }, [
-            _c("label", { attrs: { for: "address" } }, [
-              _vm._v(_vm._s(_vm.$lang["Shipping Address"]) + " *")
-            ]),
-            _vm._v(" "),
-            _c("textarea", {
-              directives: [
-                {
-                  name: "model",
-                  rawName: "v-model",
-                  value: _vm.user.address,
-                  expression: "user.address"
-                }
-              ],
-              class:
-                _vm.errors && _vm.errors.address
-                  ? "form-control is-invalid"
-                  : "form-control",
-              attrs: {
-                id: "address",
-                placeholder: _vm.$lang["Shipping Address"],
-                required: ""
-              },
-              domProps: { value: _vm.user.address },
-              on: {
-                input: function($event) {
-                  if ($event.target.composing) {
-                    return
-                  }
-                  _vm.$set(_vm.user, "address", $event.target.value)
-                }
-              }
-            }),
-            _vm._v(" "),
-            _vm.errors && _vm.errors.address
-              ? _c("span", { staticClass: "text-danger" }, [
-                  _vm._v(
-                    "\n          " +
-                      _vm._s(_vm.errors.address[0]) +
-                      "\n        "
-                  )
-                ])
-              : _vm._e()
-          ]),
-          _vm._v(" "),
-          _c(
-            "button",
-            { staticClass: "btn btn-primary", attrs: { type: "submit" } },
+      _vm.user.phone && _vm.user.address == null
+        ? _c(
+            "div",
             [
-              _vm._v(
-                "\n        " +
-                  _vm._s(_vm.$lang["Next: Delivery Timing"]) +
-                  "\n      "
-              )
-            ]
+              _c("router-link", { attrs: { to: { name: "profile" } } }, [
+                _c("label", { staticClass: "text-danger" }, [
+                  _vm._v("Please update Your Profile First "),
+                  _c("span", { staticClass: "text-info" }, [
+                    _vm._v("Click Here")
+                  ])
+                ])
+              ])
+            ],
+            1
           )
-        ]
-      )
+        : _c("div", [
+            _c(
+              "form",
+              {
+                attrs: { autocomplete: "off" },
+                on: {
+                  submit: function($event) {
+                    $event.preventDefault()
+                    return _vm.saveAddress.apply(null, arguments)
+                  }
+                }
+              },
+              [
+                _c("div", { staticClass: "form-label-group mb-3" }, [
+                  _c("label", { attrs: { for: "name" } }, [
+                    _vm._v(_vm._s(_vm.$lang["Name"]) + " *")
+                  ]),
+                  _vm._v(" "),
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.user.name,
+                        expression: "user.name"
+                      }
+                    ],
+                    class:
+                      _vm.errors && _vm.errors.name
+                        ? "form-control is-invalid"
+                        : "form-control",
+                    attrs: {
+                      type: "text",
+                      id: "name",
+                      placeholder: _vm.$lang["Name"],
+                      required: ""
+                    },
+                    domProps: { value: _vm.user.name },
+                    on: {
+                      input: function($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.$set(_vm.user, "name", $event.target.value)
+                      }
+                    }
+                  }),
+                  _vm._v(" "),
+                  _vm.errors && _vm.errors.name
+                    ? _c("span", { staticClass: "text-danger" }, [
+                        _vm._v(
+                          "\n          " +
+                            _vm._s(_vm.errors.name[0]) +
+                            "\n        "
+                        )
+                      ])
+                    : _vm._e()
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "form-label-group mb-3" }, [
+                  _c("label", { attrs: { for: "phone" } }, [
+                    _vm._v(_vm._s(_vm.$lang["Mobile Number"]) + " *")
+                  ]),
+                  _vm._v(" "),
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.user.phone,
+                        expression: "user.phone"
+                      }
+                    ],
+                    class:
+                      _vm.errors && _vm.errors.phone
+                        ? "form-control is-invalid"
+                        : "form-control",
+                    attrs: {
+                      type: "text",
+                      id: "phone",
+                      placeholder: _vm.$lang["Mobile Number"],
+                      required: ""
+                    },
+                    domProps: { value: _vm.user.phone },
+                    on: {
+                      input: function($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.$set(_vm.user, "phone", $event.target.value)
+                      }
+                    }
+                  }),
+                  _vm._v(" "),
+                  _vm.errors && _vm.errors.phone
+                    ? _c("span", { staticClass: "text-danger" }, [
+                        _vm._v(
+                          "\n          " +
+                            _vm._s(_vm.errors.phone[0]) +
+                            "\n        "
+                        )
+                      ])
+                    : _vm._e()
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "form-label-group mb-3" }, [
+                  _c("label", { attrs: { for: "address" } }, [
+                    _vm._v(_vm._s(_vm.$lang["Shipping Address"]) + " *")
+                  ]),
+                  _vm._v(" "),
+                  _c("textarea", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.user.address,
+                        expression: "user.address"
+                      }
+                    ],
+                    class:
+                      _vm.errors && _vm.errors.address
+                        ? "form-control is-invalid"
+                        : "form-control",
+                    attrs: {
+                      id: "address",
+                      placeholder: _vm.$lang["Shipping Address"],
+                      required: ""
+                    },
+                    domProps: { value: _vm.user.address },
+                    on: {
+                      input: function($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.$set(_vm.user, "address", $event.target.value)
+                      }
+                    }
+                  }),
+                  _vm._v(" "),
+                  _vm.errors && _vm.errors.address
+                    ? _c("span", { staticClass: "text-danger" }, [
+                        _vm._v(
+                          "\n          " +
+                            _vm._s(_vm.errors.address[0]) +
+                            "\n        "
+                        )
+                      ])
+                    : _vm._e()
+                ]),
+                _vm._v(" "),
+                _c(
+                  "button",
+                  { staticClass: "btn btn-primary", attrs: { type: "submit" } },
+                  [
+                    _vm._v(
+                      "\n        " +
+                        _vm._s(_vm.$lang["Next: Delivery Timing"]) +
+                        "\n      "
+                    )
+                  ]
+                )
+              ]
+            )
+          ])
     ])
   ])
 }
@@ -91744,7 +91783,12 @@ var render = function() {
             "button",
             {
               staticClass: "btn btn-primary btn-block mt-2",
-              attrs: { type: "submit" }
+              on: {
+                submit: function($event) {
+                  $event.preventDefault()
+                  return _vm.onSubmit.apply(null, arguments)
+                }
+              }
             },
             [
               _vm.loading
