@@ -4548,6 +4548,12 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   computed: _objectSpread(_objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_0__.mapGetters)("auth", ["user", "loading"])), (0,vuex__WEBPACK_IMPORTED_MODULE_0__.mapGetters)("checkout", ["errors"])),
+  // created (){
+  //   console.log('created');
+  // },
+  // mounted(){
+  //   console.log('mount');
+  // },  
   methods: _objectSpread(_objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_0__.mapActions)("checkout", ["storeAddress", "nextStep"])), {}, {
     saveAddress: function saveAddress() {
       var _this = this;
@@ -5460,6 +5466,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   computed: {
     step: function step() {
+      // console.log(this.$store.getters["checkout/step"],'ttt')
       return this.$store.getters["checkout/step"];
     },
     cartItems: function cartItems() {
@@ -7794,7 +7801,7 @@ var mutations = {
     state.step = state.step - 1;
   },
   resetStep: function resetStep(state) {
-    state.step = 0;
+    state.step = 1;
   },
   setLoading: function setLoading(state, loading) {
     state.loading = loading;

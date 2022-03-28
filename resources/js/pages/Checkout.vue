@@ -26,6 +26,7 @@
 		},
 		computed: {
 			step: function() {
+				// console.log(this.$store.getters["checkout/step"],'ttt')
 				return this.$store.getters["checkout/step"];
 			},
 			cartItems: function() {

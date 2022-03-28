@@ -52,19 +52,32 @@ class ProductController extends Controller
 
     public function productUpdate(Request $request, $id)
     {
-        $validator = Validator::make($request->all(), [
-            'trans.name'    => 'required',
-        ], [
-            'trans.name.unique' => _lang('Name should be unique !'),
-        ]);
+        // $validator = Validator::make($request->all(), [
+        //     'trans.name'    => 'required',
+        // ], [
+        //     'trans.name.unique' => _lang('Name should be unique !'),
+        // ]);
 
-        $update_product = DB::table('products')
-            ->where('xitem', $id)
-            ->update([
-                'slug' => $request->input('slug'),
-                'stock' => $request->input('stock')
-            ]);
+        // $products = Product::all();
+        $productlist = $request->productList;
+        
+        foreach($productlist as $products)
+        {
+            if (count($products->xitem) > 0) {
+                $update_product = DB::table('products')
+                ->where('xitem', $id)
+                ->updateOrInsert([
+                    'slug' => $products['slug'],
+                    'stock' => $products['stock'],
+                    'xitem' => $products['xitem'],
+                ]);
+            }
+        }
         return response()->json($update_product);
+
+        
+      
+       
     }
 
     public function allProduct()
@@ -77,6 +90,29 @@ class ProductController extends Controller
 
     public function store(Request $request)
     {
+
+         $validator = Validator::make($request->all(), [
+            'trans.name'    => 'required',
+        ], [
+            'trans.name.unique' => _lang('Name should be unique !'),
+        ]);
+
+        // $productlist = $request->productList;
+
+        // foreach ($productlist as $products) {
+        //     // if (count($products['xitem']) > 0) {
+        //         $update_product = DB::table('products')
+        //         ->where('xitem', $products['xitem'])
+        //             ->updateOrInsert([
+        //                 'slug' => $products['slug'],
+        //                 'stock' => $products['stock'],
+        //                 'xitem' => $products['xitem'],
+        //             ]);
+        //     // }
+        // }
+        // return response()->json($update_product);
+
+
         $productlist = $request->productList;
 
         foreach($productlist as $products)
@@ -88,50 +124,15 @@ class ProductController extends Controller
             $product->xitem  = $products['xitem'];
             $product->save();
         }
-        return response()->json($product);
-
-        // if ($productlist = $request->productList) {
-        //     foreach ($request->slug as $key => $insert) {
-        //         $product = new Product();
-        //         $product->slug   = $productlist->slug[$key];
-        //         $product->stock  = $productlist->stock[$key];
-        //         $product->xitem  = $productlist->xitem[$key];
-        //         $product->save();
-        //     }
-        // }
-
-       
-
-        // $validator = Validator::make($request->all(), [
-        //     'trans.name'    => 'required',
-        // ], [
-        //     'trans.name.unique' => _lang('Name should be unique !'),
-        // ]);
-
-
-        // $product           = new Product();
-        // $product->slug     = $request->input('slug');
-        // $product->stock    = $request->input('stock');
-
-        // $product->save();
-        // $id = $product->id;
-        // DB::table('products')
-        //     ->where('id', '=', $id)
-        //     ->update(['xitem' => DB::raw("CONCAT('IC--', LPAD($id, 6, 0))")]);
-
         // return response()->json($product);
 
-        // $product                   = new TempProduct();
-        // $product->product_name     = $request->input('product_name');
-        // $product->stock_quantity   = $request->input('stock_quantity');
 
-        // $product->save();
         // $id = $product->id;
         // DB::table('temp_products')
         //     ->where('id', '=', $id)
         //     ->update(['itemcode' => DB::raw("CONCAT('IC--', LPAD($id, 6, 0))")]);
 
         // return response()->json($product);
-        // return new ProductResource($product);
+        return new ProductResource($product);
     }
 }

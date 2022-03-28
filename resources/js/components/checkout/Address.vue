@@ -85,6 +85,12 @@ export default {
     ...mapGetters("auth", ["user", "loading"]),
     ...mapGetters("checkout", ["errors"]),
   },
+  // created (){
+  //   console.log('created');
+  // },
+  // mounted(){
+  //   console.log('mount');
+  // },  
   methods: {
     ...mapActions("checkout", ["storeAddress", "nextStep"]),
     saveAddress() {

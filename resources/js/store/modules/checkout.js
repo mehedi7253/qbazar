@@ -53,7 +53,7 @@ const mutations = {
 		state.step = state.step - 1
 	},
 	resetStep: (state) => {
-		state.step = 0
+		state.step = 1
 	},
 	setLoading: (state, loading) => {
 		state.loading = loading
