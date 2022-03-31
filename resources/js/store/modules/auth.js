@@ -48,6 +48,35 @@ const actions = {
         });
     });
   },
+
+  phoneLogin({ commit }, user) {
+    return new Promise((resolve, reject) => {
+      commit("setLoading", true);
+      axios
+        .post("/api/auth/phoneLogin", user)
+        .then((resp) => {
+          const token = resp.data.token;
+          const user = resp.data.user;
+          localStorage.setItem("token", token);
+
+          axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+          commit("auth_success", { token, user });
+          state.errors = {};
+          resolve(resp);
+        })
+        .catch((err) => {
+          if (err.response.status == 422) {
+            commit("setErrors", err.response.data.errors);
+          }
+          localStorage.removeItem("token");
+          reject(err);
+        })
+        .finally(() => {
+          commit("setLoading", false);
+        });
+    });
+  },
+
   reset_password({ commit }, user) {
     return new Promise((resolve, reject) => {
       commit("setLoading", true);

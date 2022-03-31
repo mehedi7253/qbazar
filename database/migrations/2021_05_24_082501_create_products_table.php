@@ -27,8 +27,9 @@ class CreateProductsTable extends Migration {
             $table->string('banner')->nullable();
             $table->string('product_type', 20)->default('general');
             $table->string('xitem')->nullable();
+            $table->string('stock')->nullable();
+            $table->longText('s_key')->nullable();
             $table->timestamps();
-
             $table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade');
         });
     }

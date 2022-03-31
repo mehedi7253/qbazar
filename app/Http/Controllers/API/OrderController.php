@@ -7,10 +7,11 @@ use App\Http\Resources\OrderResource;
 use App\Models\Coupon;
 use App\Models\Order;
 use App\Models\order_response;
+use App\Models\OrderProduct;
 use App\Models\Product;
 use App\Models\Transaction;
 use App\Services\OrderService;
-use Auth;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use PayPalCheckoutSdk\Core\PayPalHttpClient;
@@ -288,27 +289,66 @@ class OrderController extends Controller {
 
     public function allOrder()
     {
-        $orders = DB::table('order_products')
-            ->join('orders', 'orders.id', '=', 'order_products.order_id')
-            ->select('order_products.product_id as ProductID', 'order_products.qty as Quantity', 'order_products.unit_price as SellPrice','orders.discount','orders.shipping_cost', 'orders.id')
-            // ->where('order_products.order_id','=', $id)
-            ->get();
-        return response()->json($orders);
+
+        $zid = 1001;
+        $username = 'test';
+        $pass = '123';
+
+        $loginDto = ['zid' => $zid, 'username' => $username, 'password' => $pass];
+
+        $headline = DB::select(DB::raw("SELECT  DATE(created_at)  as xdate, id as xordernum, sub_total as xtotamt, shipping_cost as xshipamt, discount as xdiscamt, customer_phone as xnote FROM orders"));
+
+        foreach($headline as $header)
+        {
+            $xdate     = $header->xdate;
+            $xordernum = $header->xordernum;
+            $xtotamt   = $header->xtotamt;
+            $xshipamt  = $header->xshipamt;
+            $xdiscamt  = $header->xdiscamt;
+            $xnote     = $header->xnote;
+           
+            $hd = ['xdate' => $xdate, 'xordernum' => $xordernum, 'xtotamt' => $xtotamt, 'xshipamt' => $xshipamt, 'xdiscamt' => $xdiscamt, 'xnote' => $xnote];
+
+            $orders2 = DB::select(DB::raw("SELECT products.xitem, order_products.qty as xqtyord, order_products.unit_price as xrate, order_products.unit_price * order_products.qty as xlineamt FROM order_products, orders, products WHERE products.id = order_products.product_id AND orders.id = order_products.order_id AND order_products.order_id = $xordernum"));
+         
+        }
+
+
+        $data2 = array_merge(['loginDto' => $loginDto], ['headLine' => $hd, 'Details' => $orders2]);
+
+
+        $invoice = ['invoiceDtoList' => [$data2]];
+        
+        return response()->json($invoice);
     }
+
+
 
     public function singleOrder($id)
     {
-        $loginDto = ['zid','username', 'password'];
+        $zid = 1001;
+        $username = 'test';
+        $pass = '123';
+
+        $loginDto = ['zid' => $zid,'username' => $username, 'password' => $pass];
 
         $headline = DB::select(DB::raw("SELECT  DATE(created_at)  as xdate, id as xordernum, sub_total as xtotamt, shipping_cost as xshipamt, discount as xdiscamt, customer_phone as xnote FROM orders WHERE id = $id"));
 
-        // $orders = DB::select(DB::raw("SELECT DATE(orders.created_at)  as xdate, orders.id as xordernum, orders.sub_total as xtotamt, orders.shipping_cost as xshipamt, orders.discount as xdiscamt, orders.customer_phone as xnote, products.xitem as xqtyord, order_products.qty as xqtyord, order_products.unit_price as xrate, order_products.unit_price * order_products.qty as xlineamt FROM order_products, orders, products WHERE products.id = order_products.product_id AND orders.id = order_products.order_id AND order_products.order_id = $id"));
+        foreach($headline as $header)
+        {
+            $xdate     = $header->xdate;
+            $xordernum = $header->xordernum;
+            $xtotamt   = $header->xtotamt;
+            $xshipamt  = $header->xshipamt;
+            $xdiscamt  = $header->xdiscamt;
+            $xnote     = $header->xnote;
+        }
 
-        $orders = DB::select(DB::raw("SELECT products.xitem as xqtyord, order_products.qty as xqtyord, order_products.unit_price as xrate, order_products.unit_price * order_products.qty as xlineamt FROM order_products, orders, products WHERE products.id = order_products.product_id AND orders.id = order_products.order_id AND order_products.order_id = $id"));
-        // $data = [ $headline, 'details_list', $orders];
-        
-        // $hed = Arr::flatten($headline);
-        $data = array_merge(['loginDto'=> $loginDto],['headline' => $headline],['Details' => $orders]);
+        $hd = ['xdate' => $xdate, 'xordernum'=> $xordernum, 'xtotamt' => $xtotamt, 'xshipamt' => $xshipamt, 'xdiscamt' => $xdiscamt, 'xnote' => $xnote];
+
+        $orders = DB::select(DB::raw("SELECT products.slug as xitem, order_products.qty as xqtyord, order_products.unit_price as xrate, order_products.unit_price * order_products.qty as xlineamt FROM order_products, orders, products WHERE products.id = order_products.product_id AND orders.id = order_products.order_id AND order_products.order_id = $id"));
+
+        $data = array_merge(["loginDto" => $loginDto],["header" => $hd],['detailsList' => $orders]);
 
         return response()->json($data);
     }

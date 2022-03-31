@@ -97,33 +97,33 @@ class ProductController extends Controller
             'trans.name.unique' => _lang('Name should be unique !'),
         ]);
 
-        // $productlist = $request->productList;
+        $productlist = $request->productList;
 
-        // foreach ($productlist as $products) {
+        foreach ($productlist as $products) {
         //     // if (count($products['xitem']) > 0) {
-        //         $update_product = DB::table('products')
-        //         ->where('xitem', $products['xitem'])
-        //             ->updateOrInsert([
-        //                 'slug' => $products['slug'],
-        //                 'stock' => $products['stock'],
-        //                 'xitem' => $products['xitem'],
-        //             ]);
-        //     // }
-        // }
+                $update_product = DB::table('products')
+                ->where('xitem', $products['xitem'])
+                    ->updateOrInsert([
+                        'slug' => $products['slug'],
+                        'stock' => $products['stock'],
+                        'xitem' => $products['xitem'],
+                    ]);
+            // }
+        }
         // return response()->json($update_product);
 
 
-        $productlist = $request->productList;
+        // $productlist = $request->productList;
 
-        foreach($productlist as $products)
-        {
-            // $pro_name = $products['slug'];
-            $product = new Product();
-            $product->slug   = $products['slug'];
-            $product->stock  = $products['stock'];
-            $product->xitem  = $products['xitem'];
-            $product->save();
-        }
+        // foreach($productlist as $products)
+        // {
+        //     // $pro_name = $products['slug'];
+        //     $product = new Product();
+        //     $product->slug   = $products['slug'];
+        //     $product->stock  = $products['stock'];
+        //     $product->xitem  = $products['xitem'];
+        //     $product->save();
+        // }
         // return response()->json($product);
 
 
@@ -132,7 +132,7 @@ class ProductController extends Controller
         //     ->where('id', '=', $id)
         //     ->update(['itemcode' => DB::raw("CONCAT('IC--', LPAD($id, 6, 0))")]);
 
-        // return response()->json($product);
-        return new ProductResource($product);
+        return response()->json($update_product);
+        // return new ProductResource($update_product);
     }
 }

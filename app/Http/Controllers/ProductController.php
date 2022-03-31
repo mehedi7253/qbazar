@@ -215,7 +215,8 @@ class ProductController extends Controller {
             'special_price' => 'nullable|numeric',
             'in_stock'      => 'required',
             'thumbnail'     => 'nullable|image',
-            'stock'         => 'nullable'
+            'stock'         => 'nullable',
+            's_key'         => 'required',
         ], [
             'trans.name.unique' => _lang('Name should be unique !'),
         ]);
@@ -253,6 +254,7 @@ class ProductController extends Controller {
         $product->in_stock      = $request->input('in_stock');
         $product->is_active     = $request->input('is_active');
         $product->stock         = $request->input('stock');
+        $product->s_key         = $request->input('s_key');
         if ($request->hasfile('thumbnail')) {
             $product->thumbnail = $thumbnail;
         }

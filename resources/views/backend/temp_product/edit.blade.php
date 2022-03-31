@@ -66,7 +66,13 @@
                                             value="{{ old('special_price') }}">
                                     </div>
                                 </div>
-
+                                 <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label class="control-label">{{ _lang('Search Key') }}</label>
+                                        <input type="text" class="form-control" name="s_key"
+                                            value="{{ $product->s_key }}">
+                                    </div>
+                                </div>
                                 <div class="col-md-12">
                                     <div class="form-group">
                                         <label class="control-label">{{ _lang('Description') }}</label>
@@ -102,6 +108,7 @@
                                             value="{{ $product->stock }}">
                                     </div>
                                 </div>
+                                
                                 <div class="col-md-12">
                                     <div class="form-group">
                                         <label class="control-label">{{ _lang('In Stock') }}</label>

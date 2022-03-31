@@ -100,6 +100,19 @@
                   mb-1
                 "
                 >Forgot Password?</router-link>
+
+                 <!-- <router-link
+                :to="{ name: 'phoneLogin' }"
+                class="
+                  btn btn-lg btn-light
+                  text-dark
+                  btn-block
+                  text-uppercase
+                  py-3
+                  mb-1
+                "
+                >Login With Phone</router-link> -->
+                
             </form>
           </div>
         </div>
@@ -140,7 +153,7 @@ export default {
   methods: {
     login: function () {
       let email = this.email;
-      let password = this.password;
+      let  password = this.password;
       this.$store
         .dispatch("auth/login", { email, password })
         .then(() => {

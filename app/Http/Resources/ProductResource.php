@@ -29,7 +29,8 @@ class ProductResource extends JsonResource {
             'in_stock'      => $this->in_stock,
             'unit'          => $this->unit_number . ' ' . $this->unit->translation->short_name,
             'stock_quantity' => $this->stockProducts->stock_quantity,
-            'stock'          => $this->stock
+            'stock'          => $this->stock,
+            's_key'          => $this->s_key,
         ];
     }
 }

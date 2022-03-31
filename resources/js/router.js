@@ -7,7 +7,7 @@ import Login from "./components/auth/Login.vue";
 import Register from "./components/auth/Register.vue";
 import ForgetPassword from "./components/auth/ForgetPassword.vue";
 import ChangePassword from "./components/auth/ChangePassword.vue";
-
+import phoneLogin from "./components/auth/phoneLogin.vue";
 //All Pages
 import HomePage from "./pages/Home.vue";
 import CategoryProducts from "./pages/CategoryProducts.vue";
@@ -71,6 +71,14 @@ const route = [
     path: "/login",
     name: "login",
     component: Login,
+    meta: {
+      guest: true,
+    },
+  },
+   {
+    path: "/phoneLogin",
+    name: "phoneLogin",
+    component: phoneLogin,
     meta: {
       guest: true,
     },

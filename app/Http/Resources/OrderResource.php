@@ -29,7 +29,6 @@ class OrderResource extends JsonResource {
             'payment_status'   => $this->payment_status,
             'delivery_status'  => $this->delivery_status,
             'products'         => $this->products,
-            
         ];
     }
 }
