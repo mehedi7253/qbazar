@@ -16,6 +16,10 @@ class Product extends Model
      */
     protected $table = 'products';
 
+    protected $fillable = [
+        'slug', 'category_id',  'unit_id', 'unit_number', 'op_name', 'price', 'special_price', 'in_stock', 'viewed', 'is_active', 'thumbnail', 'banner', 'product_type', 'stock', 'xitem', 's_key'
+    ]; 
+
     public function category(){
         return $this->belongsTo('App\Models\Category','category_id')->withDefault();
     }

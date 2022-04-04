@@ -15,14 +15,14 @@
 						<div class="col-md-12">
 							<div class="invoice-wrapper">
                                 <div class="text-center" style="margin-top: -2%">
-                                    <img src="{{ asset('logo/logo.png') }}" style="height: 100px; width: 100px">
+                                    <img src="{{ asset('logo/logo.jpg') }}" style=" width: 100px">
                                 </div>
 								@if($order->payment_status == $order::PAID)
 								<div class="payment-info">
 									<div class="row">
 										<div class="col-sm-6">
 											<span>{{ _lang('Order ID') }}: <b>{{ $order->id }}</b></span><br>
-											<span>{{ _lang('Order Date') }}: <b>{{ $order->created_at }}</b></span><br>
+											<span>{{ _lang('Order Date') }}: <b>{{ date('d-m-Y h:i A', strtotime($order->created_at)) }}</b></span><br>
 											<span>{{ _lang('Delivery Type') }}: <b>{{ strtoupper($order->delivery_type) }}</b></span><br>
 										</div>
 										<div class="col-sm-6 text-right">
@@ -42,7 +42,7 @@
 									<div class="row">
 										<div class="col-sm-6">
 											<span>{{ _lang('Order ID') }}: <b>{{ $order->id }}</b></span><br>
-											<span>{{ _lang('Order Date') }}: <b>{{ $order->created_at }}</b></span><br>
+											<span>{{ _lang('Order Date') }}: <b>{{ date('d-m-Y h:i A', strtotime($order->created_at)) }}</b></span><br>
 											<span>{{ _lang('Delivery Type') }}: <b>{{ strtoupper($order->delivery_type) }}</b></span><br>
 										</div>
 										<div class="col-sm-6 text-right">

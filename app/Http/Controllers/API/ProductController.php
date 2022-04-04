@@ -97,42 +97,70 @@ class ProductController extends Controller
             'trans.name.unique' => _lang('Name should be unique !'),
         ]);
 
-        $productlist = $request->productList;
-
-        foreach ($productlist as $products) {
-        //     // if (count($products['xitem']) > 0) {
-                $update_product = DB::table('products')
-                ->where('xitem', $products['xitem'])
-                    ->updateOrInsert([
-                        'slug' => $products['slug'],
-                        'stock' => $products['stock'],
-                        'xitem' => $products['xitem'],
-                    ]);
-            // }
-        }
-        // return response()->json($update_product);
 
 
-        // $productlist = $request->productList;
+        // $oldexistList = [];     
+
+        // $oldNonExist = [];
 
         // foreach($productlist as $products)
         // {
-        //     // $pro_name = $products['slug'];
-        //     $product = new Product();
-        //     $product->slug   = $products['slug'];
-        //     $product->stock  = $products['stock'];
-        //     $product->xitem  = $products['xitem'];
-        //     $product->save();
+        //     foreach($oldList as $olddProduct){
+        //         if($products['xitem'] == $olddProduct->xitem){
+        //             array_push($oldexistList, $olddProduct);
+        //         }
+        //     }
         // }
-        // return response()->json($product);
 
+        // foreach ($oldList as $olddProduct) {
+        //     foreach($productlist as $products) {
+        //         if ($products['xitem'] != $olddProduct->xitem) {
+        //             $i=0;
+        //             foreach ($oldNonExist as $one) {
+        //                 i
+        //             }
+        //             array_push($oldNonExist, $olddProduct);
 
-        // $id = $product->id;
-        // DB::table('temp_products')
-        //     ->where('id', '=', $id)
-        //     ->update(['itemcode' => DB::raw("CONCAT('IC--', LPAD($id, 6, 0))")]);
+        //         }
+        //     }
+        // }
 
-        return response()->json($update_product);
-        // return new ProductResource($update_product);
+        // // return $oldexistList; //success
+        // return $oldNonExist; //success
+
+        $productlist = $request->productList;
+
+        $oldList = Product::all();
+
+        foreach ($productlist as $products) {
+           
+            foreach ($oldList as $olddProduct){
+               if($olddProduct['xitem'] == $products['xitem'])
+               {
+                    DB::table('products')
+                        ->where('xitem', $products['xitem'])
+                        ->update(['stock' => 0]);
+               }else{
+                    $products2 = DB::table('products')->where('xitem', $products['xitem'])->get();
+                    if (count($products2) > 0) {
+                        DB::table('products')
+                        ->where('xitem', '=', $products['xitem'])
+                            ->update(['stock' => $products['stock']]);
+                    } else {
+                        $product = new Product();
+                         $product->slug   = $products['slug'];
+                        $product->stock  = $products['stock'];
+                        $product->xitem  = $products['xitem'];
+                        $product->save();
+                    }
+               }
+                
+
+            }
+            
+            
+        }
+        // return new ProductResource($product);
+        return response()->json(true);
     }
 }

@@ -53,10 +53,16 @@ class Order extends Model {
 
     }
 
-    public function getCreatedAtAttribute($value) {
-        $date_format = get_date_format();
-        $time_format = get_time_format();
-        return \Carbon\Carbon::parse($value)->format("$date_format $time_format");
+    // public function getCreatedAtAttribute($value) {
+    //     $date_format = get_date_format();
+    //     $time_format = get_time_format();
+    //     return \Carbon\Carbon::parse($value)->format("$date_format, $time_format");
+    // }
+
+    public function getCreatedAtAttribute($date)
+    {
+        // date('h:i A', strtotime($currentDateTime));
+        return \Carbon\Carbon::parse($date)->format('d-m-Y g:i A', $date);
     }
 
     public function getDeliveryTimeAttribute($value) {

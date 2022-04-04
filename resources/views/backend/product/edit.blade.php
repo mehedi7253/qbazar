@@ -19,7 +19,7 @@
                                     <div class="form-group">
                                         <label class="control-label">{{ _lang('Name') }}</label>
                                         <input type="text" class="form-control" name="trans[name]"
-                                            value="{{ $product->translation->name }}" required>
+                                            value="{{ $product->slug }}" required>
                                     </div>
                                 </div>
                                 <div class="col-md-12">

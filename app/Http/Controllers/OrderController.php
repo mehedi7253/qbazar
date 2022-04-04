@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Order;
 use App\Models\Transaction;
 use DataTables;
-use DB;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use Validator;
 
@@ -28,8 +28,11 @@ class OrderController extends Controller
      */
     public function index()
     {
+        $orders = Order::orderBy("id", "asc")->get();
+        //  = Order::select('orders.*')
+        //     ->orderBy("orders.id", 'DESC')->get();
 
-        return view('backend.order.list');
+        return view('backend.order.list', compact('orders'));
     }
 
     public function get_table_data()

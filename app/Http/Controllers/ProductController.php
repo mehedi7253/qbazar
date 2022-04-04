@@ -216,7 +216,7 @@ class ProductController extends Controller {
             'in_stock'      => 'required',
             'thumbnail'     => 'nullable|image',
             'stock'         => 'nullable',
-            's_key'         => 'required',
+            // 's_key'         => 'required',
         ], [
             'trans.name.unique' => _lang('Name should be unique !'),
         ]);

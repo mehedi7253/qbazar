@@ -97,6 +97,8 @@ Route::group(['middleware' => ['install']], function () {
                 'create', 'store', 'edit',
             ]);
             Route::get('invoice/{id}', 'OrderController@invoice')->name('orders.invoice');
+            Route::get('details/{id}', 'OrderController@show')->name('orders.show');
+            Route::delete('delete-order/{id}', 'OrderController@destroy')->name('orders.destroy');
 
             //Order Product Controller
             Route::get('/all/product', [OrderProductController::class, 'index'])->name('order.product');

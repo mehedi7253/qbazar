@@ -100,6 +100,7 @@ class OrderController extends Controller {
 
         $grand_total = ($sub_total + $deliveryCharge) - $discount;
 
+        // $date = 
         $orderData = [
             'cartItems'       => $finalItems,
             'sub_total'       => $sub_total,
@@ -290,43 +291,55 @@ class OrderController extends Controller {
     public function allOrder()
     {
 
-        $zid = 1001;
-        $username = 'test';
-        $pass = '123';
+        $zid = 200000;
+        $username = 'ideal';
+        $pass = 'ideal@2020';
 
         $loginDto = ['zid' => $zid, 'username' => $username, 'password' => $pass];
 
         $headline = DB::select(DB::raw("SELECT  DATE(created_at)  as xdate, id as xordernum, sub_total as xtotamt, shipping_cost as xshipamt, discount as xdiscamt, customer_phone as xnote FROM orders"));
 
-        foreach($headline as $header)
-        {
-            $xdate     = $header->xdate;
-            $xordernum = $header->xordernum;
-            $xtotamt   = $header->xtotamt;
-            $xshipamt  = $header->xshipamt;
-            $xdiscamt  = $header->xdiscamt;
-            $xnote     = $header->xnote;
-           
-            $hd = ['xdate' => $xdate, 'xordernum' => $xordernum, 'xtotamt' => $xtotamt, 'xshipamt' => $xshipamt, 'xdiscamt' => $xdiscamt, 'xnote' => $xnote];
+        // $head = [];
+        $arr = [];
 
-            $orders2 = DB::select(DB::raw("SELECT products.xitem, order_products.qty as xqtyord, order_products.unit_price as xrate, order_products.unit_price * order_products.qty as xlineamt FROM order_products, orders, products WHERE products.id = order_products.product_id AND orders.id = order_products.order_id AND order_products.order_id = $xordernum"));
-         
+        $orders = DB::select(DB::raw("SELECT order_products.product_id as OrdeID, products.xitem, order_products.qty as xqtyord, order_products.unit_price as xrate, order_products.unit_price * order_products.qty as xlineamt FROM order_products, orders, products WHERE products.id = order_products.product_id AND orders.id = order_products.order_id"));
+
+        // $merged = $headline->merge($orders);
+
+        $filmProjects = Order::all();
+        $newMediaProjects =  OrderProduct::all();
+
+        foreach ($filmProjects as $filmProject) {
+            $newMediaProjects->add($filmProject);
         }
 
+        // or we can also do this $newMediaProjects->toBase()->merge($filmProjects);
 
-        $data2 = array_merge(['loginDto' => $loginDto], ['headLine' => $hd, 'Details' => $orders2]);
+        return $newMediaProjects->toArray();
 
+        // $result = $merged->all();
 
-        $invoice = ['invoiceDtoList' => [$data2]];
-        
-        return response()->json($invoice);
+        // return $result;
+
+        // $childs = array();
+        // foreach ($headline as &$head) {
+        //     $childs[$head->xordernum][] = &$head;
+            
+        //     unset($head);
+        // }
+       
+        // return $childs;
+
+       
+
+        // return response()->json($arr1);
     }
 
 
 
     public function singleOrder($id)
     {
-        $zid = 1001;
+        $zid = 100090;
         $username = 'test';
         $pass = '123';
 
