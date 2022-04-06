@@ -773,6 +773,7 @@ class ComposerStaticInitb536befd1bd789afb873a293eeb22755
         'App\\Models\\Unit' => __DIR__ . '/../..' . '/app/Models/Unit.php',
         'App\\Models\\UnitTranslation' => __DIR__ . '/../..' . '/app/Models/UnitTranslation.php',
         'App\\Models\\User' => __DIR__ . '/../..' . '/app/Models/User.php',
+        'App\\Models\\jsnitem' => __DIR__ . '/../..' . '/app/Models/jsnitem.php',
         'App\\Models\\order_response' => __DIR__ . '/../..' . '/app/Models/order_response.php',
         'App\\Models\\product_stock' => __DIR__ . '/../..' . '/app/Models/product_stock.php',
         'App\\Providers\\AppServiceProvider' => __DIR__ . '/../..' . '/app/Providers/AppServiceProvider.php',

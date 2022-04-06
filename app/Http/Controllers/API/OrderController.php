@@ -290,51 +290,25 @@ class OrderController extends Controller {
 
     public function allOrder()
     {
-
-        $zid = 200000;
-        $username = 'ideal';
-        $pass = 'ideal@2020';
+        $zid = 100090;
+        $username = 'test';
+        $pass = '123';
 
         $loginDto = ['zid' => $zid, 'username' => $username, 'password' => $pass];
 
-        $headline = DB::select(DB::raw("SELECT  DATE(created_at)  as xdate, id as xordernum, sub_total as xtotamt, shipping_cost as xshipamt, discount as xdiscamt, customer_phone as xnote FROM orders"));
+        $final = array();
+        $orders = Order::all();
 
-        // $head = [];
-        $arr = [];
+        foreach ($orders as $header) {
+            $head = DB::select(DB::raw("SELECT  DATE(created_at)  as xdate, id as xordernum, sub_total as xtotamt, shipping_cost as xshipamt, discount as xdiscamt, customer_phone as xnote FROM orders where id = $header->id"));
 
-        $orders = DB::select(DB::raw("SELECT order_products.product_id as OrdeID, products.xitem, order_products.qty as xqtyord, order_products.unit_price as xrate, order_products.unit_price * order_products.qty as xlineamt FROM order_products, orders, products WHERE products.id = order_products.product_id AND orders.id = order_products.order_id"));
+            $item = DB::select(DB::raw("SELECT products.xitem, order_products.qty as xqtyord, order_products.unit_price as xrate, order_products.unit_price * order_products.qty as xlineamt FROM order_products, orders, products WHERE products.id = order_products.product_id AND orders.id = order_products.order_id AND order_products.order_id = $header->id"));
 
-        // $merged = $headline->merge($orders);
-
-        $filmProjects = Order::all();
-        $newMediaProjects =  OrderProduct::all();
-
-        foreach ($filmProjects as $filmProject) {
-            $newMediaProjects->add($filmProject);
+            array_push($final, array("loginDto" => $loginDto, "headline" => $head, "detailsList" => $item));
         }
-
-        // or we can also do this $newMediaProjects->toBase()->merge($filmProjects);
-
-        return $newMediaProjects->toArray();
-
-        // $result = $merged->all();
-
-        // return $result;
-
-        // $childs = array();
-        // foreach ($headline as &$head) {
-        //     $childs[$head->xordernum][] = &$head;
-            
-        //     unset($head);
-        // }
-       
-        // return $childs;
-
-       
-
-        // return response()->json($arr1);
+        $data = array_merge(['invoiceDto' => $final]);
+        return response()->json($data);
     }
-
 
 
     public function singleOrder($id)

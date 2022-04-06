@@ -28,10 +28,9 @@ class OrderController extends Controller
      */
     public function index()
     {
-        $orders = Order::orderBy("id", "asc")->get();
-        //  = Order::select('orders.*')
-        //     ->orderBy("orders.id", 'DESC')->get();
-
+     
+        $orders = Order::select('orders.*')
+           ->orderBy("orders.id", "DESC")->get();
         return view('backend.order.list', compact('orders'));
     }
 

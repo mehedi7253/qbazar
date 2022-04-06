@@ -20,13 +20,13 @@
             <small>{{ product.unit }}</small>
 
             <!-- {{ product.stock }} || {{ product.stock_quantity }}
-            <p v-if="product.stock_quantity <= product.stock">
+            <p v-if="product.stock <= product.stock_quantity">
               available
             </p>
             <p v-else>
               not available
             </p> -->
-            <!-- <p v-if="product.stock_quantity <= product.stock"> available </p> -->
+            <!-- <p v-if="product.stock_quantity <= product.stock"> available </p>  -->
             <p class="price"><span v-html="product._price"></span></p>
             <button
               v-if="product.stock_quantity <= product.stock"

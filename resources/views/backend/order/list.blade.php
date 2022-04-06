@@ -9,14 +9,14 @@
                 <span class="panel-title">{{ _lang('Manage Product List') }}</span>
             </div>
             <div class="card-body">
-                <div class="table-responsive">
-                <table id="example" class="table table-striped table-bordered" style="width:100%">
+                {{-- <div class="card-body"> --}}
+                   <table id="orders_table" class="table table-bordered data-table" desc style="width:100%">
                     <thead>
                         <tr>
                             <th>{{ _lang('ID') }}</th>
                             <th>{{ _lang('Order Date') }}</th>
-                            <th style="width: 20%">{{ _lang('Customer Name') }}</th>
-                            <th>{{ _lang('Email') }}</th>
+                            <th>{{ _lang('Customer Name') }}</th>
+                            <th style="width: 20%">{{ _lang('Email') }}</th>
                             <th>{{ _lang('Total') }}</th>
                             <th>{{ _lang('Delivery') }}</th>
                             <th>{{ _lang('Payment') }}</th>
@@ -24,12 +24,12 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($orders as $i=>$order)
+                        @foreach ($orders as $order)
                             <tr>
-                                <td class=" text-center">{{ $order->id }} </td>
+                                <td>{{ $order->id }} </td>
                                 <td>{{ $order->created_at }}</td>
                                 <td>{{ $order->customer_name }}</td>
-                                <td style="width: 10%">{{ $order->customer_email }}</td>
+                                <td>{{ $order->customer_email }}</td>
                                 <td>{{ $order->currency }}{{ number_format($order->total,2) }}  </td>
                                 <td>
                                     @if ($order->delivery_status == 'pending')
@@ -49,19 +49,27 @@
                                     @endif
                                 </td>
                                 <td>
-                                     <form action="{{ route('orders.destroy', $order->id ) }}" method="POST">
-                                        <a href="{{ route('orders.show',$order->id) }}" class="btn btn-primary btn-sm"><i class="icofont-eye"></i></a>
-                                        @csrf
-                                        @method('DELETE')
-                                        <button class="btn btn-danger btn-sm" type="submit" onclick="return confirm('Are you sure to delete !!');"><i class="icofont-trash"></i></button>
-                                    </form>
+                                    <div class="dropdown">
+                                        <button type="button" class="btn btn-light dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            Action
+                                        </button>
+                                        <div class="dropdown-menu">
+                                            <a href="{{ route('orders.show',$order->id) }}" class="btn btn-primary btn-sm dropdown-item"><i class="icofont-eye-alt"></i> View</a>
+                                             <form action="{{ route('orders.destroy', $order->id ) }}" method="POST">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button class="btn btn-danger btn-sm dropdown-item" type="submit" onclick="return confirm('Are you sure to delete !!');"> <i class="icofont-ui-delete"></i> Delete</button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                    
                                 </td>
                             </tr>
                         @endforeach
                     </tbody>
                 </table>
-                </div>
-               
+                {{-- </div> --}}
+                
             </div>
         </div>
     </div>
@@ -70,7 +78,7 @@
 @endsection
 @section('js-script')
     <script>
-        $(document).ready(function() {
+      $(document).ready(function() {
             $('#example').DataTable();
         } );
     </script>

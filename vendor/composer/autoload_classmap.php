@@ -95,6 +95,7 @@ return array(
     'App\\Models\\Unit' => $baseDir . '/app/Models/Unit.php',
     'App\\Models\\UnitTranslation' => $baseDir . '/app/Models/UnitTranslation.php',
     'App\\Models\\User' => $baseDir . '/app/Models/User.php',
+    'App\\Models\\jsnitem' => $baseDir . '/app/Models/jsnitem.php',
     'App\\Models\\order_response' => $baseDir . '/app/Models/order_response.php',
     'App\\Models\\product_stock' => $baseDir . '/app/Models/product_stock.php',
     'App\\Providers\\AppServiceProvider' => $baseDir . '/app/Providers/AppServiceProvider.php',
