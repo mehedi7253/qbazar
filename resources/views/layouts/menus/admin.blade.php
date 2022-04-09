@@ -50,7 +50,6 @@
 		<a class="nav-link" href="{{ route('categories.create') }}">{{ _lang('Add New') }}</a>
 	</nav>
 </div>
-
 <a class="nav-link" href="{{ route('offers.index') }}">
 	<div class="sb-nav-link-icon"><i class="icofont-gift-box"></i></div>
 	{{ _lang('Offers') }}

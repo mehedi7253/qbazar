@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\apitestcontroller;
 use App\Http\Controllers\OrderProductController;
 use App\Http\Controllers\StockController;
 use App\Http\Controllers\TempProducatController;
@@ -72,6 +73,7 @@ Route::group(['middleware' => ['install']], function () {
             //route
             Route::resource('temp-product', 'TempProducatController');
             Route::resource('product-stock', 'ProductstockController');
+            Route::post('apiCall', 'apitestcontroller@apiCall')->name('apicall');
         });
 
         /** Dynamic Permission **/
@@ -99,6 +101,7 @@ Route::group(['middleware' => ['install']], function () {
             Route::get('invoice/{id}', 'OrderController@invoice')->name('orders.invoice');
             Route::get('details/{id}', 'OrderController@show')->name('orders.show');
             Route::delete('delete-order/{id}', 'OrderController@destroy')->name('orders.destroy');
+
 
             //Order Product Controller
             Route::get('/all/product', [OrderProductController::class, 'index'])->name('order.product');

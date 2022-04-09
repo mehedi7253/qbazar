@@ -64,7 +64,7 @@ class ProductController extends Controller
         // $products = Product::all();
         $productlist = $request->productList;
 
-        foreach ($productlist as $products) {
+        /*  foreach ($productlist as $products) {
             if (count($products->xitem) > 0) {
                 $update_product = DB::table('products')
                     ->where('xitem', $id)
@@ -74,8 +74,8 @@ class ProductController extends Controller
                         'xitem' => $products['xitem'],
                     ]);
             }
-        }
-        return response()->json($update_product);
+        }*/
+        return response()->json($productlist);
     }
 
     public function allProduct()
@@ -95,7 +95,7 @@ class ProductController extends Controller
             'trans.name.unique' => _lang('Name should be unique !'),
         ]);
 
-        
+
 
         $zid = 100090;
         $user = 'test';
@@ -103,49 +103,55 @@ class ProductController extends Controller
 
         $loginDto = $request->loginDto;
 
-        foreach($loginDto as $logindetails)
-        {
+        foreach ($loginDto as $logindetails) {
             $username = $logindetails['username'];
             $pass = $logindetails['pass'];
         }
-        
-        if ($username == $user && $pass == $password) {
-           
-            $productlist = $request->productList;
-            $item_list1 = "";
-            foreach ($productlist as $products) {
-                $item = $products['xitem'];
-                // print_r($item_list1);
-                if ($item_list1 == "")
-                    $item_list1 = $item_list1  . "'" . $item . "'";
-                else
-                    $item_list1 = $item_list1 . "," . "'" . $item . "'";
-            }
-            DB::select(DB::raw("UPDATE products SET stock = 0 WHERE xitem NOT IN ($item_list1)"));
 
-            foreach ($productlist as $productlist2) {
-                $products2 = DB::table('products')->where('xitem', $productlist2['xitem'])->get();
-                if (count($products2) > 0) {
-                    DB::table('products')
-                        ->where('xitem', '=', $productlist2['xitem'])
-                        ->update([
-                            'stock' => $productlist2['stock'],
-                            'slug'  => $productlist2['slug'],
-                        ]);
-                } else {
-                    $product = new Product();
-                    $product->slug   = $productlist2['slug'];
-                    $product->stock  = $productlist2['stock'];
-                    $product->xitem  = $productlist2['xitem'];
-                    $product->save();
-                }
-            }
-            return response()->json(true);
+        $productlist = $request->productList;
 
-        } else {
-            $errmsg = "user name or password not match";
-            return response()->json($errmsg);
+
+        $productlist = $request->productList;
+        $item_list1 = "";
+        foreach ($productlist as $products) {
+            $item = $products['xitem'];
+            // print_r($item_list1);
+            if ($item_list1 == "")
+                $item_list1 = $item_list1  . "'" . $item . "'";
+            else
+                $item_list1 = $item_list1 . "," . "'" . $item . "'";
         }
+        DB::select(DB::raw("UPDATE products SET stock = 0 WHERE xitem NOT IN ($item_list1)"));
 
+        foreach ($productlist as $productlist2) {
+            $products2 = DB::table('products')->where('xitem', $productlist2['xitem'])->get();
+            if (count($products2) > 0) {
+                DB::table('products')
+                    ->where('xitem', '=', $productlist2['xitem'])
+                    ->update([
+                        'stock' => $productlist2['stock'],
+                        'slug'  => $productlist2['slug'],
+                    ]);
+            } else {
+                $product = new Product();
+                $product->slug   = $productlist2['slug'];
+                $product->stock  = $productlist2['stock'];
+                $product->xitem  = $productlist2['xitem'];
+                $product->save();
+            }
+        }
+        return response()->json(true);
+
+
+
+
+
+        // if ($username == $user && $pass == $password) {
+
+           
+        // } else {
+        //     $errmsg = "user name or password not match";
+        //     return response()->json($errmsg);
+        // }
     }
 }

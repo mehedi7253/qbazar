@@ -210,7 +210,7 @@ class ProductController extends Controller {
             'trans.name'    => 'required',
             'category_id'   => 'required',
             'unit_id'       => 'required',
-            'unit_number'   => 'required|numeric',
+            'unit_number'   => 'required',
             'price'         => 'required|numeric',
             'special_price' => 'nullable|numeric',
             'in_stock'      => 'required',

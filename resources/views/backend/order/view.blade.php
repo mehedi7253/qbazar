@@ -45,7 +45,7 @@
 											<span>{{ _lang('Order Date') }}: <b>{{ date('d-m-Y h:i A', strtotime($order->created_at)) }}</b></span><br>
 											<span>{{ _lang('Delivery Status') }}: <b>{!! xss_clean($order->getDeliveryStatus()) !!}</b></span><br>
 											<span>{{ _lang('Delivery Type') }}: <b>{{ strtoupper($order->delivery_type) }}</b></span><br>
-											{{-- <span>{{ _lang('Delivery Time') }}: <b>{{ $order->delivery_time }}</b></span><br> --}}
+											<span>{{ _lang('Delivery Time') }}: <b>{{ $order->delivery_time }}</b></span><br>
 										</div>
 										<div class="col-sm-6 text-right">
 											<span>{{ _lang('Payment Method') }}</span>

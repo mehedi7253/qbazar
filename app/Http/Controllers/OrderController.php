@@ -7,6 +7,7 @@ use App\Models\Transaction;
 use DataTables;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
 use Validator;
 
 class OrderController extends Controller
@@ -28,9 +29,9 @@ class OrderController extends Controller
      */
     public function index()
     {
-     
+
         $orders = Order::select('orders.*')
-           ->orderBy("orders.id", "DESC")->get();
+            ->orderBy("orders.id", "DESC")->get();
         return view('backend.order.list', compact('orders'));
     }
 
@@ -109,15 +110,14 @@ class OrderController extends Controller
     {
         $order = Order::find($id);
         $products = DB::table('order_products')
-                ->join('products', 'products.id', '=', 'order_products.product_id')
-                ->join('unit_translations', 'unit_translations.id', 'products.unit_id')
-                ->join('product_translations', 'product_translations.product_id', 'products.id')
-                ->where('order_products.order_id','=', $id)
-                ->get();
+            ->join('products', 'products.id', '=', 'order_products.product_id')
+            ->join('unit_translations', 'unit_translations.id', 'products.unit_id')
+            ->join('product_translations', 'product_translations.product_id', 'products.id')
+            ->where('order_products.order_id', '=', $id)
+            ->get();
         // return $products;
 
         return view('backend.order.invoice', compact('products', 'order', 'id'));
-
     }
     /**
      * Assign delivery boy
@@ -212,6 +212,50 @@ class OrderController extends Controller
         $order->delivery_status = $request->delivery_status;
         if ($request->delivery_status == 'completed') {
             $order->payment_status  = 'paid';
+
+            $zid = 100090;
+            $username = 'test';
+            $pass = '123';
+
+            $loginDto = ['zid' => $zid, 'username' => $username, 'password' => $pass];
+
+            $headline = DB::select(DB::raw("SELECT  DATE(created_at)  as xdate, id as xordernum, sub_total as xtotamt, shipping_cost as xshipamt, discount as xdiscamt, customer_phone as xnote FROM orders WHERE id = $id"));
+
+            foreach ($headline as $header) {
+                $xdate     = $header->xdate;
+                $xordernum = $header->xordernum;
+                $xtotamt   = $header->xtotamt;
+                $xshipamt  = $header->xshipamt;
+                $xdiscamt  = $header->xdiscamt;
+                $xnote     = $header->xnote;
+            }
+
+            $hd = ['xdate' => $xdate, 'xordernum' => $xordernum, 'xtotamt' => $xtotamt, 'xshipamt' => $xshipamt, 'xdiscamt' => $xdiscamt, 'xnote' => $xnote];
+
+            $orders = DB::select(DB::raw("SELECT products.xitem, order_products.qty as xqtyord, order_products.unit_price as xrate, order_products.unit_price * order_products.qty as xlineamt FROM order_products, orders, products WHERE products.id = order_products.product_id AND orders.id = order_products.order_id AND order_products.order_id = $id"));
+
+            $data = array_merge(["loginDto" => $loginDto],["header" => $hd], ['detailsList' => $orders]);
+            // $response = Http::post('http://localhost:8081/aju-erp/api/product/sellcreate', $data = array_merge( ["header" => $hd], ['detailsList' => $orders]));
+
+            return response()->json($data);
+
+            // $productlist = array(
+            //     [
+            //         'slug' => 'test1',
+            //         'stock' => '10',
+            //         'xitem' => 'IC---101'
+            //     ], [
+            //         'slug' => 'test-update',
+            //         'stock' => '11',
+            //         'xitem' => 'IC---102'
+            //     ]
+            // );
+
+            // $json = json_encode($productList, true);
+
+            // $response = Http::post('http://127.0.0.1:8000/api/store-product', $data = array_merge(["productList" => $productlist]));
+            // return $response;
+
         } elseif ($request->delivery_status == 'processing' || $request->delivery_status == 'pending') {
             $order->payment_status  = 'pending';
         }
