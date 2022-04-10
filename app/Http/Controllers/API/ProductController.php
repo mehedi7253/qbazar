@@ -29,7 +29,7 @@ class ProductController extends Controller
                 $query->where('name', 'like', '%' . $keyword . '%');
             })
             ->orderBy('slug')
-            ->limit(15)
+            // ->limit(15)
             ->get();
 
         return ProductResource::collection($products);
@@ -97,21 +97,19 @@ class ProductController extends Controller
 
 
 
-        $zid = 100090;
-        $user = 'test';
-        $password = '123';
+        // $zid = 100090;
+        // $user = 'test';
+        // $password = '123';
 
-        $loginDto = $request->loginDto;
+        // $loginDto = $request->loginDto;
 
-        foreach ($loginDto as $logindetails) {
-            $username = $logindetails['username'];
-            $pass = $logindetails['pass'];
-        }
-
-        $productlist = $request->productList;
-
+        // foreach ($loginDto as $logindetails) {
+        //     $username = $logindetails['username'];
+        //     $pass = $logindetails['pass'];
+        // }
 
         $productlist = $request->productList;
+
         $item_list1 = "";
         foreach ($productlist as $products) {
             $item = $products['xitem'];
@@ -134,6 +132,7 @@ class ProductController extends Controller
                     ]);
             } else {
                 $product = new Product();
+                // $product->slug   = $request->trans['name'];
                 $product->slug   = $productlist2['slug'];
                 $product->stock  = $productlist2['stock'];
                 $product->xitem  = $productlist2['xitem'];

@@ -220,6 +220,8 @@ class OrderController extends Controller {
     }
 
     public function mark_as_delivered($orderId) {
+        $currenct_date = date('Y-m-d H:i:s');
+
         $order = Order::where('id', $orderId)
             ->where('delivery_boy_id', Auth::Guard('api')->user()->id)
             ->first();
@@ -227,6 +229,7 @@ class OrderController extends Controller {
         if ($order) {
             $order->delivery_status = Order::COMPLETED;
             $order->payment_status  = Order::PAID;
+            $order->delivery_time   = $currenct_date;
             $order->save();
 
             //Trigger Order Palced Event
@@ -301,9 +304,7 @@ class OrderController extends Controller {
 
         foreach ($orders as $header) {
             $head = DB::select(DB::raw("SELECT  DATE(created_at)  as xdate, id as xordernum, sub_total as xtotamt, shipping_cost as xshipamt, discount as xdiscamt, customer_phone as xnote FROM orders where id = $header->id"));
-
             $item = DB::select(DB::raw("SELECT products.xitem, order_products.qty as xqtyord, order_products.unit_price as xrate, order_products.unit_price * order_products.qty as xlineamt FROM order_products, orders, products WHERE products.id = order_products.product_id AND orders.id = order_products.order_id AND order_products.order_id = $header->id"));
-
             array_push($final, array("loginDto" => $loginDto, "headline" => $head, "detailsList" => $item));
         }
         $data = array_merge(['invoiceDto' => $final]);
@@ -318,7 +319,6 @@ class OrderController extends Controller {
         $pass = '123';
 
         $loginDto = ['zid' => $zid,'username' => $username, 'password' => $pass];
-
         $headline = DB::select(DB::raw("SELECT  DATE(created_at)  as xdate, id as xordernum, sub_total as xtotamt, shipping_cost as xshipamt, discount as xdiscamt, customer_phone as xnote FROM orders WHERE id = $id"));
 
         foreach($headline as $header)
@@ -332,11 +332,8 @@ class OrderController extends Controller {
         }
 
         $hd = ['xdate' => $xdate, 'xordernum'=> $xordernum, 'xtotamt' => $xtotamt, 'xshipamt' => $xshipamt, 'xdiscamt' => $xdiscamt, 'xnote' => $xnote];
-
         $orders = DB::select(DB::raw("SELECT products.slug as xitem, order_products.qty as xqtyord, order_products.unit_price as xrate, order_products.unit_price * order_products.qty as xlineamt FROM order_products, orders, products WHERE products.id = order_products.product_id AND orders.id = order_products.order_id AND order_products.order_id = $id"));
-
         $data = array_merge(["loginDto" => $loginDto],["header" => $hd],['detailsList' => $orders]);
-
         return response()->json($data);
     }
     public function orderResponse(Request $request, $id)

@@ -29,7 +29,13 @@
                                     <img src="{{ asset('uploads/media/'.$product->thumbnail ) }}" style="height: 50px; width: 50px">
                                 </td>
                                 <td>{{ $product->xitem }}</td>
-                                <td>{{ $product->translation->name }}</td>
+                                <td>
+                                    @if ($product->category_id == null)
+                                        {{ $product->slug }}</td>
+                                        @else
+                                         {{ $product->translation->name }}
+                                    @endif
+                                </td>
                                 <td style="width: 10%">{{ $product->category->translation->name }}</td>
                                 <td>{{ $product->unit_number }} {{ $product->unit->translation->short_name }} </td>
                                 <td>{{ $product->price }}</td>

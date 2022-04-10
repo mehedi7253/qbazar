@@ -9,6 +9,8 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Validator;
+use GuzzleHttp\Client;
+use GuzzleHttp\Exception\ConnectException;
 
 class OrderController extends Controller
 {
@@ -211,51 +213,71 @@ class OrderController extends Controller
         $previous_delivery_status = $order->delivery_status;
         $order->delivery_status = $request->delivery_status;
         if ($request->delivery_status == 'completed') {
+            $currenct_date = date('Y-m-d H:i:s');
             $order->payment_status  = 'paid';
+            $order->delivery_time = $currenct_date;
 
-            $zid = 100090;
-            $username = 'test';
-            $pass = '123';
+            $zid = 200000;
+            $username = 'ecom';
+            $pass = 'ecom123';
 
             $loginDto = ['zid' => $zid, 'username' => $username, 'password' => $pass];
 
-            $headline = DB::select(DB::raw("SELECT  DATE(created_at)  as xdate, id as xordernum, sub_total as xtotamt, shipping_cost as xshipamt, discount as xdiscamt, customer_phone as xnote FROM orders WHERE id = $id"));
+            if ($username == 'ecom' && $pass == 'ecom123') {
+                $headline = DB::select(DB::raw("SELECT  DATE(created_at)  as xdate, id as xordernum, sub_total as xtotamt, shipping_cost as xshipamt, discount as xdiscamt, customer_phone as xnote FROM orders WHERE id = $id"));
 
-            foreach ($headline as $header) {
-                $xdate     = $header->xdate;
-                $xordernum = $header->xordernum;
-                $xtotamt   = $header->xtotamt;
-                $xshipamt  = $header->xshipamt;
-                $xdiscamt  = $header->xdiscamt;
-                $xnote     = $header->xnote;
+                foreach ($headline as $header) {
+                    $xdate     = $header->xdate;
+                    $xordernum = $header->xordernum;
+                    $xtotamt   = $header->xtotamt;
+                    $xshipamt  = $header->xshipamt;
+                    $xdiscamt  = $header->xdiscamt;
+                    $xnote     = $header->xnote;
+                }
+
+                $hd = ['xdate' => $xdate, 'xordernum' => $xordernum, 'xtotamt' => $xtotamt, 'xshipamt' => $xshipamt, 'xdiscamt' => $xdiscamt, 'xnote' => $xnote];
+
+                $orders = DB::select(DB::raw("SELECT products.xitem, order_products.qty as xqtyord, order_products.unit_price as xrate, order_products.unit_price * order_products.qty as xlineamt FROM order_products, orders, products WHERE products.id = order_products.product_id AND orders.id = order_products.order_id AND order_products.order_id = $id"));
+                $data = array_merge(["loginDto" => $loginDto],["header" => $hd], ['detailsList' => $orders]);
+
+                // $client = new Client();
+                $response = Http::post("http://103.120.223.29:8080/aju-erp/api/product/sellcreate", $data);
+
+        
+                if($response == true){
+
+                    $productdto = $response['productDto'];
+                    $item_list1 = "";
+
+                    foreach ($productdto as $pdetails) {
+                        $item = $pdetails['xitem'];
+                        // print_r($item_list1);
+                        if ($item_list1 == "")
+                            $item_list1 = $item_list1  . "'" . $item . "'";
+                        else
+                            $item_list1 = $item_list1 . "," . "'" . $item . "'";
+                    }
+
+                    foreach ($productdto as $productlist2) {
+                        $products2 = DB::table('products')->where('xitem', $productlist2['xitem'])->get();
+
+                        if (count($products2) > 0) {
+                            DB::table('products')
+                            ->where('xitem', '=', $productlist2['xitem'])
+                            ->update([
+                                'stock' => $productlist2['stock']
+                            ]);
+                        }
+                    }
+                    
+                } else {
+                    return 'error';
+                }
+                // return $xitem;
+
+            } else {
+                "shdb";
             }
-
-            $hd = ['xdate' => $xdate, 'xordernum' => $xordernum, 'xtotamt' => $xtotamt, 'xshipamt' => $xshipamt, 'xdiscamt' => $xdiscamt, 'xnote' => $xnote];
-
-            $orders = DB::select(DB::raw("SELECT products.xitem, order_products.qty as xqtyord, order_products.unit_price as xrate, order_products.unit_price * order_products.qty as xlineamt FROM order_products, orders, products WHERE products.id = order_products.product_id AND orders.id = order_products.order_id AND order_products.order_id = $id"));
-
-            $data = array_merge(["loginDto" => $loginDto],["header" => $hd], ['detailsList' => $orders]);
-            // $response = Http::post('http://localhost:8081/aju-erp/api/product/sellcreate', $data = array_merge( ["header" => $hd], ['detailsList' => $orders]));
-
-            return response()->json($data);
-
-            // $productlist = array(
-            //     [
-            //         'slug' => 'test1',
-            //         'stock' => '10',
-            //         'xitem' => 'IC---101'
-            //     ], [
-            //         'slug' => 'test-update',
-            //         'stock' => '11',
-            //         'xitem' => 'IC---102'
-            //     ]
-            // );
-
-            // $json = json_encode($productList, true);
-
-            // $response = Http::post('http://127.0.0.1:8000/api/store-product', $data = array_merge(["productList" => $productlist]));
-            // return $response;
-
         } elseif ($request->delivery_status == 'processing' || $request->delivery_status == 'pending') {
             $order->payment_status  = 'pending';
         }
