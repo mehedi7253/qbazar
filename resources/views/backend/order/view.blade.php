@@ -1,11 +1,13 @@
 @extends('layouts.app')
 
 @section('content')
+@php $permissions = permission_list(); @endphp
+@php $user_type = Auth::user()->user_type; @endphp
 <div class="row">
 	<div class="col-lg-9">
 		<div class="card">
 			<div class="card-header">
-				<span class="panel-title">{{ _lang('View Order Details') }} <a href="{{ route('orders.invoice', $id) }}" class="btn btn-info float-right"><i class="icofont-file-document"></i> Invoice</a></span>
+				<span class="panel-title">{{ _lang('View Order Details') }} @if (in_array('dashboard.order_processing_widget',$permissions) || $user_type == 'admin')  <span class="mr-2"><a href="{{ route('orders.invoice.find', $id) }}" class="btn btn-info "><i class="icofont-edit"></i> Update Order</a> </span> @endif <a href="{{ route('orders.invoice', $id) }}" class="btn btn-info float-right"><i class="icofont-file-document"></i> Invoice</a></span>
 			</div>
 
 			<div class="card-body">

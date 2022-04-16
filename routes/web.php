@@ -73,7 +73,6 @@ Route::group(['middleware' => ['install']], function () {
             //route
             Route::resource('temp-product', 'TempProducatController');
             Route::resource('product-stock', 'ProductstockController');
-            Route::post('apiCall', 'apitestcontroller@apiCall')->name('apicall');
         });
 
         /** Dynamic Permission **/
@@ -101,8 +100,11 @@ Route::group(['middleware' => ['install']], function () {
             Route::get('invoice/{id}', 'OrderController@invoice')->name('orders.invoice');
             Route::get('details/{id}', 'OrderController@show')->name('orders.show');
             Route::delete('delete-order/{id}', 'OrderController@destroy')->name('orders.destroy');
+            Route::get('update-invoice/{id}', 'OrderController@findInvoice')->name('orders.invoice.find');
+            Route::put('invoice-update/{id}', 'OrderController@updateInvoice')->name('orders.invoice.update');
+            Route::put('discount-update/{id}', 'OrderController@discountAmount')->name('orders.invoice.discount');
 
-
+            
             //Order Product Controller
             Route::get('/all/product', [OrderProductController::class, 'index'])->name('order.product');
             //Order Product Search

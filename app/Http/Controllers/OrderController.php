@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Order;
+use App\Models\OrderProduct;
 use App\Models\Transaction;
 use DataTables;
 use Illuminate\Support\Facades\DB;
@@ -10,7 +11,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Validator;
 use GuzzleHttp\Client;
-use GuzzleHttp\Exception\ConnectException;
+use GuzzleHttp\Psr7;
+use GuzzleHttp\Exception\ClientException;
+
 
 class OrderController extends Controller
 {
@@ -223,7 +226,7 @@ class OrderController extends Controller
 
             $loginDto = ['zid' => $zid, 'username' => $username, 'password' => $pass];
 
-            if ($username == 'ecom' && $pass == 'ecom123') {
+            if ($username == 'ecom' && $pass == 'ecom1023') {
                 $headline = DB::select(DB::raw("SELECT  DATE(created_at)  as xdate, id as xordernum, sub_total as xtotamt, shipping_cost as xshipamt, discount as xdiscamt, customer_phone as xnote FROM orders WHERE id = $id"));
 
                 foreach ($headline as $header) {
@@ -243,6 +246,7 @@ class OrderController extends Controller
                 // $client = new Client();
                 $response = Http::post("http://103.120.223.29:8080/aju-erp/api/product/sellcreate", $data);
 
+                // return $response;
         
                 if($response == true){
 
@@ -273,10 +277,9 @@ class OrderController extends Controller
                 } else {
                     return 'error';
                 }
-                // return $xitem;
-
             } else {
-                "shdb";
+                $error = "User Name Or password Incorrect..!!";
+                return $error;
             }
         } elseif ($request->delivery_status == 'processing' || $request->delivery_status == 'pending') {
             $order->payment_status  = 'pending';
@@ -316,5 +319,78 @@ class OrderController extends Controller
         $order = Order::find($id);
         $order->delete();
         return redirect()->route('orders.index')->with('success', _lang('Deleted Successfully'));
+    }
+
+    public function findInvoice($id){
+        $order = Order::find($id);
+        $products = DB::table('order_products')
+            ->join('products', 'products.id', '=', 'order_products.product_id')
+            ->join('unit_translations', 'unit_translations.id', 'products.unit_id')
+            ->join('product_translations', 'product_translations.product_id', 'products.id')
+            ->select('order_products.id as OrderProductID','qty', 'product_translations.name','unit_number', 'unit_price','line_total','unit_translations.short_name')
+            ->where('order_products.order_id', '=', $id)
+            ->get();
+
+            // return $products;
+        return view('backend.order.update-invoice', compact('order','id','products'));
+    }
+
+    public function updateInvoice(Request $request, $id)
+    {
+        $order_item = OrderProduct::find($id);
+        $order_item->qty = $request->qty;
+        $order_item->save();
+
+        if($order_item == true)
+        {
+            $line_total = $order_item->qty * $order_item->unit_price;
+            DB::select(DB::raw("UPDATE order_products SET line_total = $line_total WHERE id = $id"));
+            $subtotal = DB::select(DB::raw("SELECT SUM(line_total) as SubTotal FROM order_products WHERE order_id = $order_item->order_id"));
+
+            $order_tbl = DB::table('orders')->where('id',$order_item->order_id)->get();
+            
+            foreach($order_tbl as $orders)
+            {
+                if ($orders->shipping_cost == 0) {
+                    foreach($subtotal as $subTotal){
+                        DB::select(DB::raw("UPDATE orders SET sub_total = $subTotal->SubTotal, total = $subTotal->SubTotal  WHERE id = $order_item->order_id"));
+                    }
+                }elseif($orders->discount !== 0){
+                    foreach ($subtotal as $subTotal) {
+                        $shiping = $orders->shipping_cost + $subTotal->SubTotal - $orders->discount;
+                        DB::select(DB::raw("UPDATE orders SET sub_total = $subTotal->SubTotal, total = $shiping  WHERE id = $order_item->order_id"));
+                    }
+                }else{
+                    foreach ($subtotal as $subTotal) {
+                        $shiping = $orders->shipping_cost + $subTotal->SubTotal;
+                        DB::select(DB::raw("UPDATE orders SET sub_total = $subTotal->SubTotal, total = $shiping  WHERE id = $order_item->order_id"));
+                    }
+                }
+            }
+            
+        }
+        return back()->with('success','Update Successful');
+
+    }
+
+    public function discountAmount(Request $request, $id)
+    {
+        $order = Order::find($id);
+        $order->discount = $request->discount;
+        $order->save();
+
+        if($order == true)
+        {
+            if($order->shippinig_cost !== 0 ){
+                $discountValue = $order->shippinig_cost + $order->total - $order->discount;
+                DB::select(DB::raw("UPDATE orders SET total = $discountValue  WHERE id = $id"));
+            }else{
+                $discountValue = $order->total - $order->discount;
+                DB::select(DB::raw("UPDATE orders SET total = $discountValue  WHERE id = $id"));
+            }
+           
+
+        }
+        return back()->with('success', 'Discount Added Successful');
     }
 }
