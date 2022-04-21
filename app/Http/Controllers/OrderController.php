@@ -337,8 +337,9 @@ class OrderController extends Controller
 
     public function updateInvoice(Request $request, $id)
     {
-        $order_item = OrderProduct::find($id);
-        $order_item->qty = $request->qty;
+        $order_item             = OrderProduct::find($id);
+        $order_item->qty        = $request->qty;
+        $order_item->unit_price = $request->unit_price;
         $order_item->save();
 
         if($order_item == true)

@@ -30,8 +30,10 @@
 							<td class='description'>{{ $category->translation->description }}</td>
 							<td class='parent_category'>{{ $category->parent_category->translation->name }}</td>
 							<td class='is_active text-center'>{!! $category->is_active ? xss_clean(status(_lang('Active'))) : xss_clean(status(_lang('InActive','danger'))) !!}</td>
-
-							<td class="text-center">
+							<td>										
+								<a href="{{ route('getcat.product', $category->slug) }}" class="btn btn-info"><i class="icofont-eye-alt"></i> {{ _lang('View') }}</a>
+							</td>
+							{{-- <td class="text-center">
 								<span class="dropdown">
 								  <button class="btn btn-primary dropdown-toggle btn-sm" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 								  {{ _lang('Action') }}
@@ -47,7 +49,7 @@
 									</div>
 								  </form>
 								</span>
-							</td>
+							</td> --}}
 					    </tr>
 					    @endforeach
 					</tbody>

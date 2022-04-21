@@ -18,6 +18,7 @@
                                               <th>Quantity</th>
                                               <th>Rate</th>
                                               <th>Amount</th> 
+                                              <th>Action</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -26,23 +27,22 @@
                                                     <td>{{ ++$i }}</td>
                                                     <td>{{ $product->name }}</td>
                                                     <td>{{ $product->unit_number }} {{ $product->short_name }}</td>
-                                                    <td style="width: 22%">
-                                                        <form action="{{ route('orders.invoice.update', $product->OrderProductID) }}" method="post">
+                                                   <form action="{{ route('orders.invoice.update', $product->OrderProductID) }}" method="post">
                                                             @csrf
                                                             @method('PUT')
-                                                            <div class="form-group input-group">
-                                                                <input type="number" min="1" id="qty" name="qty" class="form-control" value="{{ $product->qty }}">
-                                                                <button type="submit" name="update" class="btn btn-danger"><i class="icofont-arrow-up"></i></button>
-                                                            </div>
-                                                        </form>
-                                                    </td>
-                                                    <td>
-                                                        {!! xss_clean(decimalPlace($product->unit_price, currency($order->currency))) !!}
-                                                    </td>
-                                                    <td>
-                                                        {!! xss_clean(decimalPlace($product->line_total, currency($order->currency))) !!}    
-                                                    
-                                                    </td>
+                                                        <td style="width: 22%">
+                                                            <input type="number" min="1" id="qty" name="qty" class="form-control" value="{{ $product->qty }}">
+                                                        </td>
+                                                        <td>
+                                                            <input type="number" min="1"  name="unit_price" class="form-control" value="{{ $product->unit_price }}">
+                                                        </td>
+                                                        <td>
+                                                            {!! xss_clean(decimalPlace($product->line_total)) !!}    
+                                                        </td>
+                                                        <td>
+                                                            <button type="submit" name="update" class="btn btn-danger"><i class="icofont-arrow-up"></i></button>
+                                                        </td>
+                                                    </form>
                                                 </tr>
                                             @endforeach
                                         </tbody>
@@ -66,11 +66,12 @@
                                                       {{ _lang('Total') }}  <br/>
                                                 </td>
                                                 <td style="border: none">
-                                                    <span>{!! xss_clean(decimalPlace($order->sub_total, currency($order->currency))) !!}</span> <br/>
-                                                    <span>{!! xss_clean(decimalPlace($order->shipping_cost, currency($order->currency))) !!}</span> <br/>
-                                                    <span> {!! xss_clean(decimalPlace($order->discount, currency($order->currency))) !!}</span> <br/>
-                                                    <span>{!! xss_clean(decimalPlace($order->total, currency($order->currency))) !!}</span>
+                                                    <span>{!! xss_clean(decimalPlace($order->sub_total)) !!}</span> <br/>
+                                                    <span>{!! xss_clean(decimalPlace($order->shipping_cost)) !!}</span> <br/>
+                                                    <span> {!! xss_clean(decimalPlace($order->discount)) !!}</span> <br/>
+                                                    <span>{!! xss_clean(decimalPlace($order->total)) !!}</span>
                                                 </td>
+                                                 <td style="border: none"></td>
                                             </tr>
                                             <tr>
                                                <td style="border: none"></td>
@@ -88,6 +89,7 @@
                                                     </form>
                                                 </td>
                                                <td style="border: none"></td>
+                                                <td style="border: none"></td>
                                                 
                                             </tr>
                                         </tfoot>

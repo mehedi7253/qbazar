@@ -9,38 +9,49 @@ use Illuminate\Database\Eloquent\Builder;
 use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
-class CategoryController extends Controller {
-    
-    public function index() {
+
+class CategoryController extends Controller
+{
+
+    public function index()
+    {
         $catregories = Category::with(['translation', 'child_categories'])
             ->where('is_active', 1)
             ->get();
         return CategoryResource::collection($catregories);
     }
 
-    public function banner($id){
+    public function banner($id)
+    {
         $categories = Category::where('id', $id)->first();
         return new CategoryResource($categories);
     }
 
-    public function show($slug) {
+    public function show($slug)
+    {
         $category = Category::where('slug', $slug)->first();
-
         return new CategoryResource($category);
     }
 
 
-    public function products($slug) {
-
+    public function products($slug)
+    {
+        $category = Category::where('slug', $slug)->first();
         $products = Product::where('is_active', 1)
-            ->where('product_type','general')
-            ->whereHas('category', function (Builder $query) use ($slug) {
-                $query->where('slug',$slug);
+            ->where('product_type', 'general')
+            ->whereHas('category', function (Builder $query) use ($slug, $category) {
+                $query->where('slug', $slug);
+                $query->orWhereHas('parent_category', function ($query) use ($slug) {
+                    $query->where('slug', $slug);
+                    $query->orWhereHas('parent_category', function ($query) use ($slug) {
+                        $query->where('slug', $slug);
+                    });
+                });
             })
             ->orderBy('slug')
-            ->paginate(15);
-
+            ->get();
         return ProductResource::collection($products);
     }
 

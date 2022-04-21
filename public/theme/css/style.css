@@ -217,6 +217,7 @@ label {
   height: 100%;
   background: #fff;
   transition: margin-left 0.5s;
+  overflow: scroll;
 }
 
 #content {
@@ -228,7 +229,7 @@ label {
   color: #000;
   font-size: 14px;
   font-weight: 400;
-  padding: 5px 5px 10px 15px;
+  padding: 5px 5px 0px 15px;
 }
 
 #sidebar .nav-link.active {

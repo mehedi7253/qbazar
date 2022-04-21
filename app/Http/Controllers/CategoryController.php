@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\ProductResource;
 use App\Models\Category;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Image;
 use Validator;
 
@@ -25,8 +27,29 @@ class CategoryController extends Controller {
      */
     public function index() {
         
-        $categorys = Category::all()->sortByDesc("id");
+        // $categorys = Category::all()->sortByDesc("id");
+        $categorys = Category::all()->where('parent_id', null);
         return view('backend.category.list', compact('categorys'));
+    }
+
+    public function getCategory($slug)
+    {
+        $main_cat = DB::select(DB::raw("SELECT id FROM categories WHERE slug = '$slug'"))[0]->id;
+
+        $products = DB::select(DB::raw("SELECT p.id, p.unit_id, p.category_id, p.slug, p.op_name, p.xitem, p.thumbnail, p.banner, p.thumbnail
+                        FROM (
+                            SELECT '$main_cat' AS id  UNION ALL
+                            (SELECT  id
+                            FROM categories
+                            CROSS JOIN (SELECT @pv := '$main_cat') initialisation
+                            WHERE   find_in_set(parent_id, @pv) > 0
+                                AND   @pv := concat(@pv, ',', id)
+                            ORDER BY parent_id, id)
+                            ) c
+                        JOIN products p ON p.category_id = c.id
+                       "));
+        
+        return ProductResource::collection($products);
     }
 
     /**

@@ -1,6 +1,4 @@
 <?php
-
-use App\Http\Controllers\apitestcontroller;
 use App\Http\Controllers\OrderProductController;
 use App\Http\Controllers\StockController;
 use App\Http\Controllers\TempProducatController;
@@ -122,6 +120,7 @@ Route::group(['middleware' => ['install']], function () {
             //Product Category
             Route::get('categories/search_categories', 'CategoryController@search_categories');
             Route::resource('categories', 'CategoryController');
+            Route::get('getcat/{slug}', 'CategoryController@getCategory')->name('getcat.product');
 
             //Offer Products
             Route::get('offers/get_table_data', 'OfferController@get_table_data');

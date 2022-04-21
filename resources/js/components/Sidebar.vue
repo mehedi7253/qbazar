@@ -21,9 +21,7 @@
       </router-link>
 
       <span v-for="category in allCategories" :key="category.id">
-        <span
-          v-if="category.sub_categories.length && category.parent_id == null"
-        >
+        <span v-if="category.sub_categories.length && category.parent_id == null">
           <a
             class="nav-link collapsed"
             href="#"
@@ -43,16 +41,26 @@
               v-for="sub_category in category.sub_categories"
               :key="sub_category.id"
             >
-              <router-link
-                class="nav-link"
-                v-on:click.native="triggerNav"
-                :to="{
+              <router-link class="nav-link" v-on:click.native="triggerNav" :to="{
                   name: 'categoryProducts',
                   params: { slug: sub_category.slug },
-                }"
-                >{{ sub_category.name }}</router-link
-              >
+                }">{{ sub_category.name }}</router-link>
+            
+              <span v-if="sub_category.sub_categories.length">
+                  <!-- <div class="collapse" :id="category.slug" data-parent="#sidebar"> -->
+                    <nav class="sidenav-menu-nested"
+                      v-for="sub_sub_category in sub_category.sub_categories"
+                      :key="sub_sub_category.id">
+
+                        <router-link class="nav-link" v-on:click.native="triggerNav" :to="{
+                            name: 'categoryProducts',
+                            params: { slug: sub_sub_category.slug },
+                          }">{{ sub_sub_category.name }}</router-link>
+                    </nav>
+                  <!-- </div> -->
+              </span>
             </nav>
+
           </div>
         </span>
 

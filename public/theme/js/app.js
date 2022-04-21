@@ -3748,6 +3748,14 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   components: {
@@ -90918,7 +90926,59 @@ var render = function() {
                                     }
                                   },
                                   [_vm._v(_vm._s(sub_category.name))]
-                                )
+                                ),
+                                _vm._v(" "),
+                                sub_category.sub_categories.length
+                                  ? _c(
+                                      "span",
+                                      _vm._l(
+                                        sub_category.sub_categories,
+                                        function(sub_sub_category) {
+                                          return _c(
+                                            "nav",
+                                            {
+                                              key: sub_sub_category.id,
+                                              staticClass: "sidenav-menu-nested"
+                                            },
+                                            [
+                                              _c(
+                                                "router-link",
+                                                {
+                                                  staticClass: "nav-link",
+                                                  attrs: {
+                                                    to: {
+                                                      name: "categoryProducts",
+                                                      params: {
+                                                        slug:
+                                                          sub_sub_category.slug
+                                                      }
+                                                    }
+                                                  },
+                                                  nativeOn: {
+                                                    click: function($event) {
+                                                      return _vm.triggerNav.apply(
+                                                        null,
+                                                        arguments
+                                                      )
+                                                    }
+                                                  }
+                                                },
+                                                [
+                                                  _vm._v(
+                                                    _vm._s(
+                                                      sub_sub_category.name
+                                                    )
+                                                  )
+                                                ]
+                                              )
+                                            ],
+                                            1
+                                          )
+                                        }
+                                      ),
+                                      0
+                                    )
+                                  : _vm._e()
                               ],
                               1
                             )
@@ -93034,41 +93094,6 @@ var render = function() {
           ]),
           _vm._v(" "),
           _vm.loading && _vm.load_more ? _c("ProductSkelton") : _vm._e(),
-          _vm._v(" "),
-          _c("div", { staticClass: "category" }, [
-            _c(
-              "div",
-              { staticClass: "row" },
-              _vm._l(_vm.category.sub_categories, function(sub_category) {
-                return _c(
-                  "div",
-                  { key: sub_category.id, staticClass: "col-lg-3 col-md-4" },
-                  [
-                    _c(
-                      "router-link",
-                      {
-                        attrs: {
-                          to: {
-                            name: "categoryProducts",
-                            params: { slug: sub_category.slug }
-                          }
-                        }
-                      },
-                      [
-                        _c("div", { staticClass: "category-item" }, [
-                          _c("img", { attrs: { src: sub_category.image } }),
-                          _vm._v(" "),
-                          _c("p", [_vm._v(_vm._s(sub_category.name))])
-                        ])
-                      ]
-                    )
-                  ],
-                  1
-                )
-              }),
-              0
-            )
-          ]),
           _vm._v(" "),
           _c("Products", {
             attrs: { products: _vm.products, loading: _vm.loading }

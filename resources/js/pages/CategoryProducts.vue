@@ -21,7 +21,7 @@
 
         <ProductSkelton v-if="loading && load_more" />
 
-        <div class="category">
+        <!-- <div class="category">
           <div class="row">
             <div
               class="col-lg-3 col-md-4"
@@ -31,7 +31,7 @@
               <router-link
                 :to="{
                   name: 'categoryProducts',
-                  params: { slug: sub_category.slug },
+                  params: { slug: sub_category.id },
                 }"
               >
                 <div class="category-item">
@@ -41,7 +41,7 @@
               </router-link>
             </div>
           </div>
-        </div>
+        </div> -->
 
         <Products :products="products" :loading="loading" />
       </div>
@@ -86,6 +86,7 @@ export default {
   },
   created() {
     this.getCategory(this.$route.params.slug);
+
     this.getProducts({ slug: this.$route.params.slug });
   },
   watch: {
