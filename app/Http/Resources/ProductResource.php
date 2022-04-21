@@ -24,7 +24,7 @@ class ProductResource extends JsonResource
             'thumbnail'     => '/uploads/media/' . $this->thumbnail,
             'banner'        => '/uploads/media/' . $this->banner,
             'name'          => $this->translation->name,
-            // 'description'   => $this->translation->description,
+            'description'   => $this->translation->description,
             'price'         => $this->price,
             'special_price' => $this->special_price,
             'current_price' => $this->special_price > 0  ? $this->special_price : $this->price,

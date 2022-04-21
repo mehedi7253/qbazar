@@ -120,7 +120,6 @@ Route::group(['middleware' => ['install']], function () {
             //Product Category
             Route::get('categories/search_categories', 'CategoryController@search_categories');
             Route::resource('categories', 'CategoryController');
-            Route::get('getcat/{slug}', 'CategoryController@getCategory')->name('getcat.product');
 
             //Offer Products
             Route::get('offers/get_table_data', 'OfferController@get_table_data');
