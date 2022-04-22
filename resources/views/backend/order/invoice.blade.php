@@ -147,10 +147,10 @@
                                         </tfoot>
                                     </table>
                                 </div>
-                                <hr/>
+                                {{-- <hr/>
                                 <div class="p-2">
                                     <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Tempore illum eos quidem placeat qui est, ratione enim perspiciatis quibusdam optio? Voluptate magni facilis repellendus aut et quasi tempora esse consequatur.</p>
-                                </div>
+                                </div> --}}
 							</div>
 						</div>
 					</div>
