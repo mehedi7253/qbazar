@@ -20,17 +20,22 @@ class ProductController extends Controller
     public function search()
     {
         $keyword = request('keyword');
-        if ($keyword == '') {
-            return ProductResource::collection([]);
-        }
+        // if ($keyword == '') {
+        //     return ProductResource::collection([]);
+        // }
 
         $products = Product::where('is_active', 1)
-            ->whereHas('translation', function (Builder $query) use ($keyword) {
-                $query->where('name', 'like', '%' . $keyword . '%');
-            })
+        ->where('s_key', 'like', '%' . $keyword . '%')
             ->orderBy('slug')
-            // ->limit(15)
             ->get();
+
+        // $products = Product::where('is_active', 1)
+        //     ->whereHas('translation', function (Builder $query) use ($keyword) {
+        //         $query->where('name', 'like', '%' . $keyword . '%');
+        //     })
+        //     ->orderBy('slug')
+        //     // ->limit(15)
+        //     ->get();
 
         return ProductResource::collection($products);
     }

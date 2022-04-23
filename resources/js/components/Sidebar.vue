@@ -36,29 +36,26 @@
             ></span>
           </a>
           <div class="collapse" :id="category.slug" data-parent="#sidebar">
-            <nav
-              class="sidenav-menu-nested"
+            <nav  class="sidenav-menu-nested"
               v-for="sub_category in category.sub_categories"
-              :key="sub_category.id"
-            >
-              <router-link class="nav-link" v-on:click.native="triggerNav" :to="{
-                  name: 'categoryProducts',
-                  params: { slug: sub_category.slug },
-                }">{{ sub_category.name }}</router-link>
-            
-              <span v-if="sub_category.sub_categories.length">
-                  <!-- <div class="collapse" :id="category.slug" data-parent="#sidebar"> -->
-                    <nav class="sidenav-menu-nested"
+              :key="sub_category.id">
+
+              <div id="accordion">
+                  <a class="nav-link collapsed" href="#" data-toggle="collapse" :data-target="'#'+sub_category.slug" aria-expanded="true" aria-controls="collapseOne">
+                        {{ sub_category.name }} <span class="sidenav-collapse-arrow" ><i class="icofont-rounded-right" 
+                        v-if="sub_category.sub_categories.length !== 0"></i ></span>
+                    </a>
+                 <span v-if="sub_category.sub_categories.length" :id="sub_category.slug" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
+                   <nav class="sidenav-menu-nested"
                       v-for="sub_sub_category in sub_category.sub_categories"
                       :key="sub_sub_category.id">
-
                         <router-link class="nav-link" v-on:click.native="triggerNav" :to="{
                             name: 'categoryProducts',
                             params: { slug: sub_sub_category.slug },
                           }">{{ sub_sub_category.name }}</router-link>
                     </nav>
-                  <!-- </div> -->
-              </span>
+                 </span>
+              </div>
             </nav>
 
           </div>

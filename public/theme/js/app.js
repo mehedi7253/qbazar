@@ -3753,9 +3753,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   components: {
@@ -90906,81 +90903,106 @@ var render = function() {
                                 staticClass: "sidenav-menu-nested"
                               },
                               [
-                                _c(
-                                  "router-link",
-                                  {
-                                    staticClass: "nav-link",
-                                    attrs: {
-                                      to: {
-                                        name: "categoryProducts",
-                                        params: { slug: sub_category.slug }
+                                _c("div", { attrs: { id: "accordion" } }, [
+                                  _c(
+                                    "a",
+                                    {
+                                      staticClass: "nav-link collapsed",
+                                      attrs: {
+                                        href: "#",
+                                        "data-toggle": "collapse",
+                                        "data-target": "#" + sub_category.slug,
+                                        "aria-expanded": "true",
+                                        "aria-controls": "collapseOne"
                                       }
                                     },
-                                    nativeOn: {
-                                      click: function($event) {
-                                        return _vm.triggerNav.apply(
-                                          null,
-                                          arguments
-                                        )
-                                      }
-                                    }
-                                  },
-                                  [_vm._v(_vm._s(sub_category.name))]
-                                ),
-                                _vm._v(" "),
-                                sub_category.sub_categories.length
-                                  ? _c(
-                                      "span",
-                                      _vm._l(
-                                        sub_category.sub_categories,
-                                        function(sub_sub_category) {
-                                          return _c(
-                                            "nav",
-                                            {
-                                              key: sub_sub_category.id,
-                                              staticClass: "sidenav-menu-nested"
-                                            },
-                                            [
-                                              _c(
-                                                "router-link",
-                                                {
-                                                  staticClass: "nav-link",
-                                                  attrs: {
-                                                    to: {
-                                                      name: "categoryProducts",
-                                                      params: {
-                                                        slug:
-                                                          sub_sub_category.slug
+                                    [
+                                      _vm._v(
+                                        "\n                      " +
+                                          _vm._s(sub_category.name) +
+                                          " "
+                                      ),
+                                      _c(
+                                        "span",
+                                        {
+                                          staticClass: "sidenav-collapse-arrow"
+                                        },
+                                        [
+                                          sub_category.sub_categories.length !==
+                                          0
+                                            ? _c("i", {
+                                                staticClass:
+                                                  "icofont-rounded-right"
+                                              })
+                                            : _vm._e()
+                                        ]
+                                      )
+                                    ]
+                                  ),
+                                  _vm._v(" "),
+                                  sub_category.sub_categories.length
+                                    ? _c(
+                                        "span",
+                                        {
+                                          staticClass: "collapse",
+                                          attrs: {
+                                            id: sub_category.slug,
+                                            "aria-labelledby": "headingOne",
+                                            "data-parent": "#accordion"
+                                          }
+                                        },
+                                        _vm._l(
+                                          sub_category.sub_categories,
+                                          function(sub_sub_category) {
+                                            return _c(
+                                              "nav",
+                                              {
+                                                key: sub_sub_category.id,
+                                                staticClass:
+                                                  "sidenav-menu-nested"
+                                              },
+                                              [
+                                                _c(
+                                                  "router-link",
+                                                  {
+                                                    staticClass: "nav-link",
+                                                    attrs: {
+                                                      to: {
+                                                        name:
+                                                          "categoryProducts",
+                                                        params: {
+                                                          slug:
+                                                            sub_sub_category.slug
+                                                        }
+                                                      }
+                                                    },
+                                                    nativeOn: {
+                                                      click: function($event) {
+                                                        return _vm.triggerNav.apply(
+                                                          null,
+                                                          arguments
+                                                        )
                                                       }
                                                     }
                                                   },
-                                                  nativeOn: {
-                                                    click: function($event) {
-                                                      return _vm.triggerNav.apply(
-                                                        null,
-                                                        arguments
+                                                  [
+                                                    _vm._v(
+                                                      _vm._s(
+                                                        sub_sub_category.name
                                                       )
-                                                    }
-                                                  }
-                                                },
-                                                [
-                                                  _vm._v(
-                                                    _vm._s(
-                                                      sub_sub_category.name
                                                     )
-                                                  )
-                                                ]
-                                              )
-                                            ],
-                                            1
-                                          )
-                                        }
-                                      ),
-                                      0
-                                    )
-                                  : _vm._e()
-                              ],
-                              1
+                                                  ]
+                                                )
+                                              ],
+                                              1
+                                            )
+                                          }
+                                        ),
+                                        0
+                                      )
+                                    : _vm._e()
+                                ])
+                              ]
                             )
                           }),
                           0
