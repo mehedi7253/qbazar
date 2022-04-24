@@ -3753,6 +3753,13 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   components: {
@@ -90917,27 +90924,53 @@ var render = function() {
                                       }
                                     },
                                     [
-                                      _vm._v(
-                                        "\n                      " +
-                                          _vm._s(sub_category.name) +
-                                          " "
-                                      ),
                                       _c(
-                                        "span",
+                                        "router-link",
                                         {
-                                          staticClass: "sidenav-collapse-arrow"
+                                          staticClass: "nav-link",
+                                          attrs: {
+                                            to: {
+                                              name: "categoryProducts",
+                                              params: {
+                                                slug: sub_category.slug
+                                              }
+                                            }
+                                          },
+                                          nativeOn: {
+                                            click: function($event) {
+                                              return _vm.triggerNav.apply(
+                                                null,
+                                                arguments
+                                              )
+                                            }
+                                          }
                                         },
                                         [
-                                          sub_category.sub_categories.length !==
-                                          0
-                                            ? _c("i", {
-                                                staticClass:
-                                                  "icofont-rounded-right"
-                                              })
-                                            : _vm._e()
+                                          _vm._v(
+                                            "\n                   " +
+                                              _vm._s(sub_category.name) +
+                                              "  "
+                                          ),
+                                          _c(
+                                            "span",
+                                            {
+                                              staticClass:
+                                                "sidenav-collapse-arrow"
+                                            },
+                                            [
+                                              sub_category.sub_categories
+                                                .length !== 0
+                                                ? _c("i", {
+                                                    staticClass:
+                                                      "icofont-rounded-right"
+                                                  })
+                                                : _vm._e()
+                                            ]
+                                          )
                                         ]
                                       )
-                                    ]
+                                    ],
+                                    1
                                   ),
                                   _vm._v(" "),
                                   sub_category.sub_categories.length

@@ -44,7 +44,7 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label class="control-label">{{ _lang('Unit Number') }}</label>
-                                        <input type="number" class="form-control" name="unit_number"
+                                        <input type="text" class="form-control" name="unit_number"
                                             value="{{ old('unit_number') }}" required>
                                     </div>
                                 </div>

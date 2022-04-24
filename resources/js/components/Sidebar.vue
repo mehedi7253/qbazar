@@ -42,8 +42,15 @@
 
               <div id="accordion">
                   <a class="nav-link collapsed" href="#" data-toggle="collapse" :data-target="'#'+sub_category.slug" aria-expanded="true" aria-controls="collapseOne">
-                        {{ sub_category.name }} <span class="sidenav-collapse-arrow" ><i class="icofont-rounded-right" 
+                      <router-link
+                        class="nav-link"
+                        v-on:click.native="triggerNav"
+                        :to="{ name: 'categoryProducts', params: { slug: sub_category.slug } }"
+                      >
+                     {{ sub_category.name }}  <span class="sidenav-collapse-arrow" ><i class="icofont-rounded-right" 
                         v-if="sub_category.sub_categories.length !== 0"></i ></span>
+                    </router-link>
+                    
                     </a>
                  <span v-if="sub_category.sub_categories.length" :id="sub_category.slug" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
                    <nav class="sidenav-menu-nested"
