@@ -255,7 +255,7 @@ label {
   height: 100%;
   background: #fff;
   transition: margin-left 0.5s;
-  overflow: scroll;
+  overflow: auto;
 }
 
 #content {

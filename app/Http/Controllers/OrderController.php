@@ -220,67 +220,67 @@ class OrderController extends Controller
             $order->payment_status  = 'paid';
             $order->delivery_time = $currenct_date;
 
-            $zid = 200000;
-            $username = 'ecom';
-            $pass = 'ecom123';
+            // $zid = 200000;
+            // $username = 'ecom';
+            // $pass = 'ecom123';
 
-            $loginDto = ['zid' => $zid, 'username' => $username, 'password' => $pass];
+            // $loginDto = ['zid' => $zid, 'username' => $username, 'password' => $pass];
 
-            if ($username == 'ecom' && $pass == 'ecom1023') {
-                $headline = DB::select(DB::raw("SELECT  DATE(created_at)  as xdate, id as xordernum, sub_total as xtotamt, shipping_cost as xshipamt, discount as xdiscamt, customer_phone as xnote FROM orders WHERE id = $id"));
+            // if ($username == 'ecom' && $pass == 'ecom1023') {
+            //     $headline = DB::select(DB::raw("SELECT  DATE(created_at)  as xdate, id as xordernum, sub_total as xtotamt, shipping_cost as xshipamt, discount as xdiscamt, customer_phone as xnote FROM orders WHERE id = $id"));
 
-                foreach ($headline as $header) {
-                    $xdate     = $header->xdate;
-                    $xordernum = $header->xordernum;
-                    $xtotamt   = $header->xtotamt;
-                    $xshipamt  = $header->xshipamt;
-                    $xdiscamt  = $header->xdiscamt;
-                    $xnote     = $header->xnote;
-                }
+            //     foreach ($headline as $header) {
+            //         $xdate     = $header->xdate;
+            //         $xordernum = $header->xordernum;
+            //         $xtotamt   = $header->xtotamt;
+            //         $xshipamt  = $header->xshipamt;
+            //         $xdiscamt  = $header->xdiscamt;
+            //         $xnote     = $header->xnote;
+            //     }
 
-                $hd = ['xdate' => $xdate, 'xordernum' => $xordernum, 'xtotamt' => $xtotamt, 'xshipamt' => $xshipamt, 'xdiscamt' => $xdiscamt, 'xnote' => $xnote];
+            //     $hd = ['xdate' => $xdate, 'xordernum' => $xordernum, 'xtotamt' => $xtotamt, 'xshipamt' => $xshipamt, 'xdiscamt' => $xdiscamt, 'xnote' => $xnote];
 
-                $orders = DB::select(DB::raw("SELECT products.xitem, order_products.qty as xqtyord, order_products.unit_price as xrate, order_products.unit_price * order_products.qty as xlineamt FROM order_products, orders, products WHERE products.id = order_products.product_id AND orders.id = order_products.order_id AND order_products.order_id = $id"));
-                $data = array_merge(["loginDto" => $loginDto],["header" => $hd], ['detailsList' => $orders]);
+            //     $orders = DB::select(DB::raw("SELECT products.xitem, order_products.qty as xqtyord, order_products.unit_price as xrate, order_products.unit_price * order_products.qty as xlineamt FROM order_products, orders, products WHERE products.id = order_products.product_id AND orders.id = order_products.order_id AND order_products.order_id = $id"));
+            //     $data = array_merge(["loginDto" => $loginDto],["header" => $hd], ['detailsList' => $orders]);
 
-                // $client = new Client();
-                $response = Http::post("http://103.120.223.29:8080/aju-erp/api/product/sellcreate", $data);
+            //     // $client = new Client();
+            //     $response = Http::post("https://103.120.223.29:8080/aju-erp/api/product/sellcreate", $data);
 
-                // return $response;
+            //     // return $response;
         
-                if($response == true){
+            //     if($response == true){
 
-                    $productdto = $response['productDto'];
-                    $item_list1 = "";
+            //         $productdto = $response['productDto'];
+            //         $item_list1 = "";
 
-                    foreach ($productdto as $pdetails) {
-                        $item = $pdetails['xitem'];
-                        // print_r($item_list1);
-                        if ($item_list1 == "")
-                            $item_list1 = $item_list1  . "'" . $item . "'";
-                        else
-                            $item_list1 = $item_list1 . "," . "'" . $item . "'";
-                    }
+            //         foreach ($productdto as $pdetails) {
+            //             $item = $pdetails['xitem'];
+            //             // print_r($item_list1);
+            //             if ($item_list1 == "")
+            //                 $item_list1 = $item_list1  . "'" . $item . "'";
+            //             else
+            //                 $item_list1 = $item_list1 . "," . "'" . $item . "'";
+            //         }
 
-                    foreach ($productdto as $productlist2) {
-                        $products2 = DB::table('products')->where('xitem', $productlist2['xitem'])->get();
+            //         foreach ($productdto as $productlist2) {
+            //             $products2 = DB::table('products')->where('xitem', $productlist2['xitem'])->get();
 
-                        if (count($products2) > 0) {
-                            DB::table('products')
-                            ->where('xitem', '=', $productlist2['xitem'])
-                            ->update([
-                                'stock' => $productlist2['stock']
-                            ]);
-                        }
-                    }
-                    
-                } else {
-                    return 'error';
-                }
-            } else {
-                $error = "User Name Or password Incorrect..!!";
-                return $error;
-            }
+            //             if (count($products2) > 0) {
+            //                 DB::table('products')
+            //                 ->where('xitem', '=', $productlist2['xitem'])
+            //                 ->update([
+            //                     'stock' => $productlist2['stock']
+            //                 ]);
+            //             }
+            //         }
+                   
+            //     } else {
+            //         return 'error';
+            //     }
+            // } else {
+            //     $error = "User Name Or password Incorrect..!!";
+            //     return $error;
+            // }
         } elseif ($request->delivery_status == 'processing' || $request->delivery_status == 'pending') {
             $order->payment_status  = 'pending';
         }

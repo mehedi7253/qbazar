@@ -41,20 +41,23 @@ class CategoryController extends Controller
         $category = Category::where('slug', $slug)->first();
         $products = Product::where('is_active', 1)
             ->where('product_type', 'general')
-            ->whereHas('category', function (Builder $query) use ($slug, $category) {
-                $query->where('slug', $slug);
-                $query->orWhereHas('parent_category', function ($query) use ($slug) {
+                ->whereHas('category', function (Builder $query) use ($slug, $category) {
                     $query->where('slug', $slug);
                     $query->orWhereHas('parent_category', function ($query) use ($slug) {
                         $query->where('slug', $slug);
+                        $query->orWhereHas('parent_category', function ($query) use ($slug) {
+                            $query->where('slug', $slug);
+                        });
                     });
-                });
-            })
-            ->orderBy('slug')
-            ->get();
+                })
+                ->orderBy('slug')
+                ->get();
         return ProductResource::collection($products);
     }
 
+    public function populerProduct(){
+        
+    }
 
     public function storeProduct(Request $request)
     {
@@ -65,7 +68,7 @@ class CategoryController extends Controller
         $product->slug          = $request->slug;
         $product->price         = $request->price;
         $product->special_price = $request->special_price;
-        $product->xitem = $request->xitem;
+        $product->xitem         = $request->xitem;
         $product->in_stock      = 1;
         $product->is_active     = 1;
 

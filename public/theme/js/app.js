@@ -3282,6 +3282,15 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   props: {
@@ -89937,62 +89946,70 @@ var render = function() {
                       })
                     ]),
                     _vm._v(" "),
-                    product.stock_quantity <= product.stock
-                      ? _c(
-                          "button",
-                          {
-                            staticClass: "btn-cart btn-block",
-                            attrs: { type: "button" },
-                            on: {
-                              click: function($event) {
-                                return _vm.addToCart(product)
-                              }
-                            }
-                          },
-                          [
-                            _c("i", { staticClass: "icofont-cart-alt" }),
-                            _vm._v(
-                              " " +
-                                _vm._s(_vm.$lang["Add to Cart"]) +
-                                "\n          "
-                            )
-                          ]
-                        )
-                      : _c(
-                          "button",
-                          {
-                            staticClass: "btn-out-of-stock btn-block",
-                            attrs: { type: "button", disabled: "" }
-                          },
-                          [
-                            _c("i", { staticClass: "icofont-warning" }),
-                            _vm._v(
-                              " " +
-                                _vm._s(_vm.$lang["Out Of Stock"]) +
-                                "\n          "
-                            )
-                          ]
-                        ),
+                    product.in_stock == 0
+                      ? _c("span", [_vm._m(0, true)])
+                      : _vm._e(),
                     _vm._v(" "),
-                    _c(
-                      "button",
-                      {
-                        staticClass: "btn btn-dark btn-block",
-                        attrs: { type: "button" },
-                        on: {
-                          click: function($event) {
-                            return _vm.showModal(product)
-                          }
-                        }
-                      },
-                      [
-                        _vm._v(
-                          "\n            " +
-                            _vm._s(_vm.$lang["View Details"]) +
-                            "\n          "
-                        )
-                      ]
-                    )
+                    product.in_stock == 1
+                      ? _c("span", [
+                          product.stock <= product.stock_quantity
+                            ? _c(
+                                "button",
+                                {
+                                  staticClass: "btn-cart btn-block",
+                                  attrs: { type: "button" },
+                                  on: {
+                                    click: function($event) {
+                                      return _vm.addToCart(product)
+                                    }
+                                  }
+                                },
+                                [
+                                  _c("i", { staticClass: "icofont-cart-alt" }),
+                                  _vm._v(
+                                    " " +
+                                      _vm._s(_vm.$lang["Add to Cart"]) +
+                                      "\n            "
+                                  )
+                                ]
+                              )
+                            : _c(
+                                "button",
+                                {
+                                  staticClass: "btn-out-of-stock btn-block",
+                                  attrs: { type: "button", disabled: "" }
+                                },
+                                [
+                                  _c("i", { staticClass: "icofont-warning" }),
+                                  _vm._v(
+                                    " " +
+                                      _vm._s(_vm.$lang["Out Of Stock"]) +
+                                      "\n            "
+                                  )
+                                ]
+                              ),
+                          _vm._v(" "),
+                          _c(
+                            "button",
+                            {
+                              staticClass: "btn btn-dark btn-block",
+                              attrs: { type: "button" },
+                              on: {
+                                click: function($event) {
+                                  return _vm.showModal(product)
+                                }
+                              }
+                            },
+                            [
+                              _vm._v(
+                                "\n              " +
+                                  _vm._s(_vm.$lang["View Details"]) +
+                                  "\n            "
+                              )
+                            ]
+                          )
+                        ])
+                      : _vm._e()
                   ])
                 ])
               ])
@@ -90378,7 +90395,21 @@ var render = function() {
     1
   )
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "button",
+      { staticClass: "btn-cart btn-block", attrs: { type: "button" } },
+      [
+        _c("i", { staticClass: "icofont-cart-alt" }),
+        _vm._v(" Request Stock\n              ")
+      ]
+    )
+  }
+]
 render._withStripped = true
 
 

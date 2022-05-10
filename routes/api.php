@@ -8,8 +8,6 @@ use App\Http\Controllers\API\PageController;
 use App\Http\Controllers\API\ProductController;
 use App\Http\Controllers\API\ResetController;
 use App\Http\Controllers\API\SettingsController;
-use App\Http\Controllers\ProductController as ControllersProductController;
-use App\Models\Category;
 use Illuminate\Support\Facades\Route;
 
 /*

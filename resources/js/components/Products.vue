@@ -28,31 +28,40 @@
             </p> -->
             <!-- <p v-if="product.stock_quantity <= product.stock"> available </p>  -->
             <p class="price"><span v-html="product._price"></span></p>
-            <button
-              v-if="product.stock_quantity <= product.stock"
-              type="button"
-              class="btn-cart btn-block"
-              @click="addToCart(product)"
-            >
-              <i class="icofont-cart-alt"></i> {{ $lang["Add to Cart"] }}
-            </button>
 
-            <button
-              v-else
-              type="button"
-              class="btn-out-of-stock btn-block"
-              disabled
-            >
-              <i class="icofont-warning"></i> {{ $lang["Out Of Stock"] }}
-            </button>
+            <span v-if="product.in_stock == 0">
+                 <button type="button" class="btn-cart btn-block">
+                  <i class="icofont-cart-alt"></i> Request Stock
+                </button>
+            </span>
+            <span v-if="product.in_stock == 1">
+              <button
+                v-if="product.stock <= product.stock_quantity"
+                type="button"
+                class="btn-cart btn-block"
+                @click="addToCart(product)"
+              >
+                <i class="icofont-cart-alt"></i> {{ $lang["Add to Cart"] }}
+              </button>
 
-            <button
-              type="button"
-              class="btn btn-dark btn-block"
-              @click="showModal(product)"
-            >
-              {{ $lang["View Details"] }}
-            </button>
+              <button
+                v-else
+                type="button"
+                class="btn-out-of-stock btn-block"
+                disabled
+              >
+                <i class="icofont-warning"></i> {{ $lang["Out Of Stock"] }}
+              </button>
+
+              <button
+                type="button"
+                class="btn btn-dark btn-block"
+                @click="showModal(product)"
+              >
+                {{ $lang["View Details"] }}
+              </button>
+            </span>
+          
           </div>
         </div>
       </div>

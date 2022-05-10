@@ -48,7 +48,7 @@
 								  </form>
 								</span>
 							</td>
-							<td></td>
+							
 					    </tr>
 					    @endforeach
 					</tbody>
