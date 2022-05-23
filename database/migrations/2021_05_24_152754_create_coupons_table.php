@@ -15,7 +15,7 @@ class CreateCouponsTable extends Migration
     {
         Schema::create('coupons', function (Blueprint $table) {
             $table->id();
-			$table->string('code')->index();
+	    $table->string('code')->index();
             $table->decimal('value', 10, 2)->unsigned()->nullable();
             $table->boolean('is_percent');
             $table->integer('used')->default(0);
